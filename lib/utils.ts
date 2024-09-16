@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
+import sanitizeHtml from "sanitize-html";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,3 +24,126 @@ export const authSchema = (type: string) => {
         : z.string().optional(),
   });
 };
+
+export const profileSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+});
+
+export const userEditSchema = z.object({
+  id: z.string().optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  email: z.string().email().optional(),
+  phone: z.string().optional(),
+  role: z.string().optional(),
+});
+
+export const teamSchema = z.object({
+  teamName: z.string().min(1, "Team name is required"),
+  teamLead: z.string().min(1, "Team lead is required"),
+  teamMembers: z
+    .array(z.string().min(1))
+    .min(1, "At least one team member is required")
+    .max(10, "You can select up to 10 team members"),
+  description: z.string().optional(),
+});
+
+export const roleDisplayNames: { [key: string]: string } = {
+  admin: "Admin",
+  "team-lead": "Team Lead",
+  "team-member": "Team Member",
+  client: "Client",
+};
+
+export const getInitials = (name: string) => {
+  if (!name) return "US";
+  const nameArray = name.split(" ");
+  const initials =
+    nameArray.length > 1
+      ? nameArray
+          .map((word) => word[0])
+          .join("")
+          .toUpperCase()
+      : nameArray[0][0].toUpperCase();
+  return initials.slice(0, 2);
+};
+
+export const formatTimestamp = (timestamp: string) => {
+  const date = new Date(timestamp);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return date.toLocaleString("en-US", options).replace(",", " -");
+};
+
+export const tagColors = [
+  { text: "text-yellow-base", bg: "bg-background-yellow" },
+  { text: "text-green-base", bg: "bg-background-green" },
+  { text: "text-blue-base", bg: "bg-background-blue" },
+  { text: "text-purple-base", bg: "bg-background-purple" },
+  { text: "text-orange-base", bg: "bg-background-orange" },
+];
+
+export const sanitizeAndStyleHtml = (html: string) => {
+  const sanitizedHtml = sanitizeHtml(html, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "p",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "ul",
+      "li",
+    ],
+    allowedAttributes: {},
+  });
+
+  return sanitizedHtml.replace(/<h[1-6]>|<\/h[1-6]>/g, (match) => {
+    switch (match) {
+      case "<h1>":
+        return '<p style="font-size: 1rem; font-weight: bold; margin: 0;">';
+      case "</h1>":
+        return "</p>";
+      case "<h2>":
+        return '<p style="font-size: 0.9rem; font-weight: bold; margin: 0;">';
+      case "</h2>":
+        return "</p>";
+      case "<h3>":
+        return '<p style="font-size: 0.85rem; font-weight: bold; margin: 0;">';
+      case "</h3>":
+        return "</p>";
+      case "<h4>":
+        return '<p style="font-size: 0.8rem; font-weight: bold; margin: 0;">';
+      case "</h4>":
+        return "</p>";
+      case "<h5>":
+        return '<p style="font-size: 0.75rem; font-weight: bold; margin: 0;">';
+      case "</h5>":
+        return "</p>";
+      case "<h6>":
+        return '<p style="font-size: 0.7rem; font-weight: bold; margin: 0;">';
+      case "</h6>":
+        return "</p>";
+      default:
+        return match;
+    }
+  });
+};
+
+export function formatLabel(label: string) {
+  return label
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
+}
