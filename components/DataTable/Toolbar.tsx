@@ -12,6 +12,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { DataTableToolbarProps } from "@/types/next-auth";
 import { deleteUsers } from "@/app/actions/userActions";
+import { deleteTeams } from "@/app/actions/teamActions";
 
 export function DataTableToolbar<TData extends { id: string }>({
   table,
@@ -46,6 +47,8 @@ export function DataTableToolbar<TData extends { id: string }>({
 
       if (entity === "users") {
         result = await deleteUsers(itemIds);
+      } else if (entity === "teams") {
+        result = await deleteTeams(itemIds);
       }
 
       if (!result?.success) {

@@ -15,6 +15,7 @@ import { toast } from "@/components/ui/use-toast";
 import CustomButton, { ButtonVariant } from "../CustomButton";
 import { DataTableRowActionsProps } from "@/types/next-auth";
 import { deleteUser } from "@/app/actions/userActions";
+import { deleteTeam } from "@/app/actions/teamActions";
 
 export function DataTableRowActions<TData extends { id: string }>({
   row,
@@ -34,6 +35,8 @@ export function DataTableRowActions<TData extends { id: string }>({
 
       if (entityName === "user") {
         result = await deleteUser(entityId);
+      } else if (entityName === "team") {
+        result = await deleteTeam(entityId);
       }
 
       if (!result?.success) {
