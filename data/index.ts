@@ -1,6 +1,7 @@
 import ProfileSetting from "@/components/forms/ProfileSetting";
 import { signOut } from "next-auth/react";
 import { Trash2, Tag } from "lucide-react";
+import NoteTags from "@/components/forms/NotesTags";
 
 export const sidebarLinks = [
   {
@@ -70,5 +71,22 @@ export const userActions = [
     label: "Log Out",
     icon: "/icons/SignOut.svg",
     action: () => signOut({ callbackUrl: "/" }),
+  },
+];
+
+export const noteActions = [
+  {
+    label: "Add Tags",
+    icon: Tag,
+    modalTitle: "Manage Tags",
+    modalDescription: "Organize your note by adding relevant tags.",
+    component: NoteTags,
+  },
+  {
+    label: "Delete",
+    icon: Trash2,
+    action: "deleteNote",
+    modalTitle: "Confirm Deletion",
+    modalDescription: "Are you sure you want to permanently delete this note?",
   },
 ];
