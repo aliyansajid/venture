@@ -8,6 +8,8 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Textarea } from "./ui/textarea";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -88,6 +90,25 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           </FormControl>
         </div>
       );
+
+    case FormFieldType.SELECT:
+      return (
+        <Select onValueChange={field.onChange} value={field.value}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder={placeholder || "Select an option"} />
+          </SelectTrigger>
+          <SelectContent className={className}>{props.children}</SelectContent>
+        </Select>
+      );
+
+    case FormFieldType.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea placeholder={placeholder} {...field} />
+        </FormControl>
+      );
+    default:
+      return null;
   }
 };
 

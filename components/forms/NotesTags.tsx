@@ -30,7 +30,7 @@ const NoteTags = ({ noteId }: NoteTagsProps) => {
   };
 
   const formSchema = z.object({
-    tags: z.array(z.string().min(3).max(15)).max(5),
+    tags: z.array(z.string().min(3).max(15)).max(3),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
