@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-animation {
+  animation: spin 1s linear infinite;
+}
+
+.toolbar {
+  height: 61px;
+  background-color: #fff;
+  border-top: none;
+  border-bottom: 1px solid #e4e4e4;
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+  padding: 12px 32px;
+}
+
+.toolbar-icon {
+  width: 20px;
+  height: 20px;
+  color: #717171;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.toolbar-icon:hover {
+  color: #000;
+}
+
+button.toolbar-icon.pressed {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  color: #000;
+}
+
+h1 {
+  font-size: 48px;
+  font-weight: medium;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: medium;
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: medium;
+}
+
+h4 {
+  font-size: 24px;
+  font-weight: medium;
+}
+
+h5 {
+  font-size: 20px;
+  font-weight: medium;
+}
+
+h6 {
+  font-size: 18px;
+  font-weight: medium;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+ul,
+ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+strong {
+  font-weight: medium;
+}
+
+em {
+  font-style: italic;
+}
+
+u {
+  text-decoration: underline;
+}
+
+s {
+  text-decoration: line-through;
+}
+
+ul[data-type="taskList"] {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul[data-type="taskList"] li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+ul[data-type="taskList"] li label {
+  display: flex;
+  align-items: center;
+}
+
+ul[data-type="taskList"] li input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d8d8d8;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+ul[data-type="taskList"] li input[type="checkbox"]:checked {
+  background-color: #333;
+}
+
+ul[data-type="taskList"] li div {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
