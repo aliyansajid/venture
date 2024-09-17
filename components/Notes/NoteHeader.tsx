@@ -190,7 +190,8 @@ const NoteHeader = ({
               }}
               onBlur={updateTitleHandler}
               maxLength={40}
-              className="text-2xl text-dark-primary font-medium document-title-input border-none outline-none"
+              className="text-2xl text-dark-primary font-medium border-none outline-none w-[240px] overflow-x-auto whitespace-nowrap"
+              style={{ direction: "ltr" }}
             />
             <span className="text-sm text-gray-500">
               {noteTitle.length}/40 characters
@@ -198,7 +199,7 @@ const NoteHeader = ({
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl text-dark-primary font-medium truncate md:truncate-none max-w-[240px] md:max-w-full">
+            <h1 className="text-2xl text-dark-primary font-medium truncate max-w-[240px] md:max-w-full">
               {noteTitle}
             </h1>
             <SquarePen
@@ -209,6 +210,7 @@ const NoteHeader = ({
           </div>
         )}
       </div>
+
       <div className="flex items-center gap-2">
         <CustomButton
           variant={ButtonVariant.DEFAULT}

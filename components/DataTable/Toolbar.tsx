@@ -76,8 +76,8 @@ export function DataTableToolbar<TData extends { id: string }>({
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between">
-      <div className="flex flex-1 flex-wrap items-center gap-3">
+    <div className="flex flex-wrap sm:flex-nowrap items-center justify-between">
+      <div className="flex flex-1 flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 w-full sm:w-auto">
         <Input
           placeholder="Enter name to search"
           value={
@@ -88,27 +88,36 @@ export function DataTableToolbar<TData extends { id: string }>({
               .getColumn(searchColumnKey)
               ?.setFilterValue(event.target.value);
           }}
-          className="w-[150px] lg:w-[250px]"
+          className="w-full sm:w-[150px] lg:w-[250px]"
         />
         {table.getColumn(filterColumnKey) && (
           <DataTableFacetedFilter
             column={table.getColumn(filterColumnKey)}
             title={filterTitle}
             options={filterOptions}
+            className="w-full sm:w-auto"
           />
         )}
         {isFiltered && (
-          <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
+          <Button
+            variant="ghost"
+            onClick={() => table.resetColumnFilters()}
+            className="w-full sm:w-auto"
+          >
             Reset
             <X size={16} />
           </Button>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
         {selectedRows.length > 0 ? (
           <>
-            <Button variant="outline" onClick={() => setShowDeleteModal(true)}>
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteModal(true)}
+              className="w-full sm:w-auto"
+            >
               <Trash2 size={16} aria-hidden="true" />
               Delete ({selectedRows.length})
             </Button>
@@ -139,7 +148,7 @@ export function DataTableToolbar<TData extends { id: string }>({
             )}
           </>
         ) : null}
-        <DataTableViewOptions table={table} />
+        <DataTableViewOptions table={table} className="w-full sm:w-auto" />
       </div>
     </div>
   );

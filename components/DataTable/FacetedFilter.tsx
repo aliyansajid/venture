@@ -25,13 +25,14 @@ export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  className,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className={className}>
         <Button variant="outline" className="border-dashed">
           <CirclePlus size={16} />
           {title}

@@ -157,6 +157,7 @@ export interface DataTableFacetedFilterProps<TData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
+  className?: string;
 }
 
 export interface DataTablePaginationProps<TData> {
@@ -190,6 +191,7 @@ interface DataTableToolbarProps<TData extends { id: string }> {
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
+  className?: string;
 }
 
 export interface FilterValue {

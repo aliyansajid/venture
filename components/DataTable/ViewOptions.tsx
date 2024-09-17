@@ -17,13 +17,14 @@ import { DataTableViewOptionsProps } from "@/types/next-auth";
 
 export function DataTableViewOptions<TData>({
   table,
+  className,
 }: DataTableViewOptionsProps<TData>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="focus-visible:ring-offset-0 focus-visible:ring-0"
+          className={`${className} focus-visible:ring-offset-0 focus-visible:ring-0`}
         >
           <Settings2 size={16} />
           View
