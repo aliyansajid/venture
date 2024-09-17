@@ -172,7 +172,7 @@ const NoteHeader = ({
   }, [isEditing]);
 
   return (
-    <div className="border-b border-border-primary h-[69px] flex items-center justify-between px-4 lg:px-8">
+    <div className="border-b border-border-primary h-[69px] flex items-center justify-between gap-3 px-4 lg:px-8">
       <div
         ref={containerRef}
         className="flex w-fit items-center justify-center gap-2"
@@ -198,7 +198,7 @@ const NoteHeader = ({
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl text-dark-primary font-medium">
+            <h1 className="text-2xl text-dark-primary font-medium truncate md:truncate-none max-w-[240px] md:max-w-full">
               {noteTitle}
             </h1>
             <SquarePen

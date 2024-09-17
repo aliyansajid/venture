@@ -95,8 +95,8 @@ export const sanitizeAndStyleHtml = (html: string) => {
     allowedTags: [
       "b",
       "i",
-      "em",
-      "strong",
+      "u",
+      "strike",
       "p",
       "h1",
       "h2",
@@ -105,35 +105,47 @@ export const sanitizeAndStyleHtml = (html: string) => {
       "h5",
       "h6",
       "ul",
+      "ol",
       "li",
+      "div",
+      "span",
+      "br",
+      "hr",
+      "blockquote",
+      "strong",
+      "em",
+      "input",
     ],
-    allowedAttributes: {},
+    allowedAttributes: {
+      "*": ["style", "class", "align"],
+      input: ["type", "checked"],
+    },
   });
 
   return sanitizedHtml.replace(/<h[1-6]>|<\/h[1-6]>/g, (match) => {
     switch (match) {
       case "<h1>":
-        return '<p style="font-size: 1rem; font-weight: bold; margin: 0;">';
+        return '<p style="font-size: 1.5rem; font-weight: bold; margin: 0;">';
       case "</h1>":
         return "</p>";
       case "<h2>":
-        return '<p style="font-size: 0.9rem; font-weight: bold; margin: 0;">';
+        return '<p style="font-size: 1.25rem; font-weight: bold; margin: 0;">';
       case "</h2>":
         return "</p>";
       case "<h3>":
-        return '<p style="font-size: 0.85rem; font-weight: bold; margin: 0;">';
+        return '<p style="font-size: 1.1rem; font-weight: bold; margin: 0;">';
       case "</h3>":
         return "</p>";
       case "<h4>":
-        return '<p style="font-size: 0.8rem; font-weight: bold; margin: 0;">';
+        return '<p style="font-size: 1rem; font-weight: bold; margin: 0;">';
       case "</h4>":
         return "</p>";
       case "<h5>":
-        return '<p style="font-size: 0.75rem; font-weight: bold; margin: 0;">';
+        return '<p style="font-size: 0.9rem; font-weight: bold; margin: 0;">';
       case "</h5>":
         return "</p>";
       case "<h6>":
-        return '<p style="font-size: 0.7rem; font-weight: bold; margin: 0;">';
+        return '<p style="font-size: 0.8rem; font-weight: bold; margin: 0;">';
       case "</h6>":
         return "</p>";
       default:
