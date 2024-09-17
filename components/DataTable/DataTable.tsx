@@ -79,7 +79,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   });
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-5">
       <DataTableToolbar
         table={table}
         searchColumnKey={searchColumnKey}

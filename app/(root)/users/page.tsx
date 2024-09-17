@@ -62,7 +62,7 @@ const Users = () => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="p-8">
+        <div className="px-4 py-8 md:p-8">
           <DataTable
             data={data}
             columns={columns}

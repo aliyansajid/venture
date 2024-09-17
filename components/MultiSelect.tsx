@@ -20,6 +20,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import Image from "next/image";
+import { FormControl, FormItem, FormLabel } from "./ui/form";
 
 const multiSelectVariants = cva(
   "mr-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
@@ -46,6 +47,7 @@ interface MultiSelectProps
   }[];
   onValueChange: (value: string[]) => void;
   defaultValue: string[];
+  label: string;
   placeholder?: string;
   animation?: number;
   maxCount?: number;
@@ -64,6 +66,7 @@ export const MultiSelect = React.forwardRef<
       onValueChange,
       variant,
       defaultValue = [],
+      label,
       placeholder = "Select options",
       animation = 0,
       maxCount = 3,
@@ -120,163 +123,173 @@ export const MultiSelect = React.forwardRef<
     };
 
     return (
-      <Popover
-        open={isPopoverOpen}
-        onOpenChange={setIsPopoverOpen}
-        modal={modalPopover}
-      >
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            ref={ref}
-            {...props}
-            onClick={handleTogglePopover}
-            className="w-full min-h-10 h-auto px-3 border-interaction-outline-base hover:bg-white"
+      <FormItem>
+        {label && <FormLabel>{label}</FormLabel>}
+        <FormControl>
+          <Popover
+            open={isPopoverOpen}
+            onOpenChange={setIsPopoverOpen}
+            modal={modalPopover}
           >
-            {selectedValues.length > 0 ? (
-              <div className="flex justify-between items-center w-full">
-                <div className="flex flex-wrap items-center">
-                  {selectedValues.slice(0, maxCount).map((value) => {
-                    const option = options.find((o) => o.value === value);
-                    return (
-                      <Badge
-                        key={value}
-                        className={cn(
-                          isAnimating ? "animate-bounce" : "",
-                          multiSelectVariants({ variant })
-                        )}
-                        style={{ animationDuration: `${animation}s` }}
-                      >
-                        <Image
-                          src={option?.profileImage || "/icons/UserCircle.svg"}
-                          alt={option?.label || "icon"}
-                          width={24}
-                          height={24}
-                          className="object-cover w-6 h-6 rounded-full"
-                        />
-                        {option?.label}
-                        <XCircle
-                          size={16}
-                          className="ml-2 cursor-pointer text-dark-secondary"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            toggleOption(value);
-                          }}
-                        />
-                      </Badge>
-                    );
-                  })}
-                  {selectedValues.length > maxCount && (
-                    <Badge
-                      className={cn(
-                        isAnimating ? "animate-bounce" : "",
-                        multiSelectVariants({ variant })
-                      )}
-                      style={{ animationDuration: `${animation}s` }}
-                    >
-                      {`+ ${selectedValues.length - maxCount} more`}
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                ref={ref}
+                {...props}
+                onClick={handleTogglePopover}
+                className="w-full min-h-10 h-auto px-3 border-interaction-outline-base hover:bg-white"
+              >
+                {selectedValues.length > 0 ? (
+                  <div className="flex justify-between items-center w-full">
+                    <div className="flex flex-wrap items-center">
+                      {selectedValues.slice(0, maxCount).map((value) => {
+                        const option = options.find((o) => o.value === value);
+                        return (
+                          <Badge
+                            key={value}
+                            className={cn(
+                              isAnimating ? "animate-bounce" : "",
+                              multiSelectVariants({ variant })
+                            )}
+                            style={{ animationDuration: `${animation}s` }}
+                          >
+                            <Image
+                              src={
+                                option?.profileImage || "/icons/UserCircle.svg"
+                              }
+                              alt={option?.label || "icon"}
+                              width={24}
+                              height={24}
+                              className="object-cover w-6 h-6 rounded-full"
+                            />
+                            {option?.label}
+                            <XCircle
+                              size={16}
+                              className="ml-2 cursor-pointer text-dark-secondary"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                toggleOption(value);
+                              }}
+                            />
+                          </Badge>
+                        );
+                      })}
+                      {selectedValues.length > maxCount && (
+                        <Badge
+                          className={cn(
+                            isAnimating ? "animate-bounce" : "",
+                            multiSelectVariants({ variant })
+                          )}
+                          style={{ animationDuration: `${animation}s` }}
+                        >
+                          {`+ ${selectedValues.length - maxCount} more`}
 
-                      <XCircle
+                          <XCircle
+                            size={16}
+                            className="ml-2 cursor-pointer text-dark-secondary"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              clearExtraOptions();
+                            }}
+                          />
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <XIcon
                         size={16}
-                        className="ml-2 cursor-pointer text-dark-secondary"
+                        className="cursor-pointer text-dark-secondary"
                         onClick={(event) => {
                           event.stopPropagation();
-                          clearExtraOptions();
+                          handleClear();
                         }}
                       />
-                    </Badge>
-                  )}
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <XIcon
-                    size={16}
-                    className="cursor-pointer text-dark-secondary"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleClear();
-                    }}
-                  />
-                  <Separator
-                    orientation="vertical"
-                    className="flex min-h-4 h-full"
-                  />
-                  <ChevronDown
-                    size={16}
-                    className="cursor-pointer text-dark-secondary"
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-between w-full">
-                <span className="text-sm text-dark-tertiary font-normal">
-                  {placeholder}
-                </span>
-                <ChevronDown
-                  size={16}
-                  className="text-dark-secondary cursor-pointer"
-                />
-              </div>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-auto h-52 p-0"
-          align="start"
-          onEscapeKeyDown={() => setIsPopoverOpen(false)}
-        >
-          <Command>
-            <CommandInput placeholder="Search" onKeyDown={handleInputKeyDown} />
-            <CommandList>
-              <CommandEmpty>No result found.</CommandEmpty>
-              <CommandGroup>
-                {options.map((option) => {
-                  const isSelected = selectedValues.includes(option.value);
-                  return (
-                    <CommandItem
-                      key={option.value}
-                      onSelect={() => toggleOption(option.value)}
-                      className="cursor-pointer px-3"
-                    >
-                      <div
-                        className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-dark-primary",
-                          isSelected
-                            ? "bg-action-primary-base text-white"
-                            : "opacity-50 [&_svg]:invisible"
-                        )}
-                      >
-                        <CheckIcon size={16} />
-                      </div>
-                      <Image
-                        src={option.profileImage || "/icons/UserCircle.svg"}
-                        alt={option.label}
-                        width={24}
-                        height={24}
-                        className="object-cover w-6 h-6 rounded-full "
+                      <Separator
+                        orientation="vertical"
+                        className="flex min-h-4 h-full"
                       />
-                      <span>{option.label}</span>
-                    </CommandItem>
-                  );
-                })}
-              </CommandGroup>
-
-              {selectedValues.length > 0 && (
-                <>
-                  <CommandSeparator />
+                      <ChevronDown
+                        size={16}
+                        className="cursor-pointer text-dark-secondary"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-sm text-dark-tertiary font-normal">
+                      {placeholder}
+                    </span>
+                    <ChevronDown
+                      size={16}
+                      className="text-dark-secondary cursor-pointer"
+                    />
+                  </div>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-auto h-52 p-0"
+              align="start"
+              onEscapeKeyDown={() => setIsPopoverOpen(false)}
+            >
+              <Command>
+                <CommandInput
+                  placeholder="Search"
+                  onKeyDown={handleInputKeyDown}
+                />
+                <CommandList>
+                  <CommandEmpty>No result found.</CommandEmpty>
                   <CommandGroup>
-                    <CommandItem
-                      onSelect={handleClear}
-                      className="justify-center text-center cursor-pointer"
-                    >
-                      Clear
-                    </CommandItem>
+                    {options.map((option) => {
+                      const isSelected = selectedValues.includes(option.value);
+                      return (
+                        <CommandItem
+                          key={option.value}
+                          onSelect={() => toggleOption(option.value)}
+                          className="cursor-pointer px-3"
+                        >
+                          <div
+                            className={cn(
+                              "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-dark-primary",
+                              isSelected
+                                ? "bg-action-primary-base text-white"
+                                : "opacity-50 [&_svg]:invisible"
+                            )}
+                          >
+                            <CheckIcon size={16} />
+                          </div>
+                          <Image
+                            src={option.profileImage || "/icons/UserCircle.svg"}
+                            alt={option.label}
+                            width={24}
+                            height={24}
+                            className="object-cover w-6 h-6 rounded-full "
+                          />
+                          <span>{option.label}</span>
+                        </CommandItem>
+                      );
+                    })}
                   </CommandGroup>
-                </>
-              )}
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
+
+                  {selectedValues.length > 0 && (
+                    <>
+                      <CommandSeparator />
+                      <CommandGroup>
+                        <CommandItem
+                          onSelect={handleClear}
+                          className="justify-center text-center cursor-pointer"
+                        >
+                          Clear
+                        </CommandItem>
+                      </CommandGroup>
+                    </>
+                  )}
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </FormControl>
+      </FormItem>
     );
   }
 );

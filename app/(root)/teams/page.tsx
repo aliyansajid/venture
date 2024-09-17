@@ -76,7 +76,7 @@ const Teams = () => {
           </h1>
         </div>
       ) : (
-        <div className="p-8">
+        <div className="px-4 py-8 md:p-8">
           <DataTable
             data={teams}
             columns={teamColumns}

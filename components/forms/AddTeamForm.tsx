@@ -16,6 +16,7 @@ import { Skeleton } from "../ui/skeleton";
 import { AddTeamFormProps, TeamUser } from "@/types/next-auth";
 import { createTeam, updateTeam, fetchTeam } from "@/app/actions/teamActions";
 import { fetchTeamLeadsAndMembers } from "@/app/actions/teamActions";
+import { Label } from "../ui/label";
 
 const AddTeamForm = ({ teamId, onSuccess }: AddTeamFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -180,14 +181,14 @@ const AddTeamForm = ({ teamId, onSuccess }: AddTeamFormProps) => {
                 </CustomFormField>
               </div>
             </div>
-
             <MultiSelect
+              label="Select Team Members"
               options={teamMemberOptions}
               onValueChange={(selectedMembers) =>
                 form.setValue("teamMembers", selectedMembers)
               }
               defaultValue={form.getValues("teamMembers") || []}
-              placeholder="Select Team Members"
+              placeholder="Choose members"
               maxCount={1}
             />
 

@@ -172,7 +172,7 @@ const NoteHeader = ({
   }, [isEditing]);
 
   return (
-    <div className="border-b border-border-primary h-[69px] flex items-center justify-between px-8">
+    <div className="border-b border-border-primary h-[69px] flex items-center justify-between px-4 lg:px-8">
       <div
         ref={containerRef}
         className="flex w-fit items-center justify-center gap-2"

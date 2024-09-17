@@ -39,7 +39,7 @@ const Tiptap = ({
     content: description || "",
     editorProps: {
       attributes: {
-        class: "tiptap min-h-[150px] focus:outline-none p-8",
+        class: "tiptap min-h-[150px] focus:outline-none p-4 lg:p-8",
       },
     },
     onUpdate({ editor }) {
