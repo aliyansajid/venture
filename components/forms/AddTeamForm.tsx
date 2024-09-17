@@ -136,7 +136,7 @@ const AddTeamForm = ({ teamId, onSuccess }: AddTeamFormProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
         {isDataLoading ? (
           <>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
               <Skeleton className="h-10 w-full" />
               <Skeleton className="h-10 w-full" />
             </div>
@@ -145,7 +145,7 @@ const AddTeamForm = ({ teamId, onSuccess }: AddTeamFormProps) => {
           </>
         ) : (
           <>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
               <div className="flex-1">
                 <CustomFormField
                   fieldType={FormFieldType.INPUT}
@@ -181,6 +181,7 @@ const AddTeamForm = ({ teamId, onSuccess }: AddTeamFormProps) => {
                 </CustomFormField>
               </div>
             </div>
+
             <MultiSelect
               label="Select Team Members"
               options={teamMemberOptions}
