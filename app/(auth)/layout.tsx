@@ -6,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <main className="flex flex-col md:flex-row min-h-screen">
       <div className="md:w-1/2 flex items-center justify-center">
         <Image
           src="/images/team-meeting-collaboration.jpg"
@@ -19,6 +19,6 @@ export default function RootLayout({
       <div className="md:w-1/2 flex items-center justify-center">
         <div className="w-full max-w-md mx-auto py-20 px-8">{children}</div>
       </div>
-    </div>
+    </main>
   );
 }

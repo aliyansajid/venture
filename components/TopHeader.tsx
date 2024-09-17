@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import SearchForm from "./forms/SearchForm";
 import { useSession } from "next-auth/react";
@@ -49,7 +50,7 @@ const TopHeader = () => {
   };
 
   return (
-    <div className="border-b border-border-primary h-[68.5px] flex items-center justify-between px-8">
+    <div className="border-b border-border-primary h-[68.5px] lg:flex hidden items-center justify-between px-8">
       <SearchForm />
       <div className="relative flex items-center gap-3">
         <TooltipProvider>

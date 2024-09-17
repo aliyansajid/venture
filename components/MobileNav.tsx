@@ -17,7 +17,7 @@ const MobileNav = () => {
   const pathName = usePathname();
 
   return (
-    <section className="block lg:hidden w-full">
+    <section className="block lg:hidden w-full h-6">
       <Sheet>
         <SheetTrigger>
           <Menu />

@@ -2,9 +2,9 @@ import AuthForm from "@/components/forms/AuthForm";
 
 const Login = () => {
   return (
-    <div>
+    <section>
       <AuthForm type="login" />
-    </div>
+    </section>
   );
 };
 
