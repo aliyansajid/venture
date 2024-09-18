@@ -191,14 +191,22 @@ const NoteHeader = ({
               onBlur={updateTitleHandler}
               maxLength={40}
               className="text-2xl text-dark-primary font-medium document-title-input border-none outline-none"
+              style={{
+                maxWidth: `calc(100vw - 168.78px)`,
+              }}
             />
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-dark-secondary">
               {noteTitle.length}/40 characters
             </span>
           </div>
         ) : (
           <div className="flex items-center gap-3 w-full">
-            <h1 className="text-2xl text-dark-primary font-medium truncate flex-grow mb-sm:max-w-[160px] mb-md:max-w-[210px] mb-lg:max-w-[240px]">
+            <h1
+              className="text-2xl text-dark-primary font-medium flex-grow truncate"
+              style={{
+                maxWidth: `calc(100vw - 168.78px)`,
+              }}
+            >
               {noteTitle}
             </h1>
             <SquarePen
