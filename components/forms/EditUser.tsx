@@ -137,10 +137,10 @@ const EditUser = ({ userId, onSuccess }: EditUserProps) => {
               name="role"
               label="Role"
             >
-              <SelectItem value="admin">Admin</SelectItem>
-              <SelectItem value="team-lead">Team Lead</SelectItem>
-              <SelectItem value="team-member">Team Member</SelectItem>
-              <SelectItem value="client">Client</SelectItem>
+              <SelectItem value="Admin">Admin</SelectItem>
+              <SelectItem value="Team Lead">Team Lead</SelectItem>
+              <SelectItem value="Team Member">Team Member</SelectItem>
+              <SelectItem value="Client">Client</SelectItem>
             </CustomFormField>
 
             <CustomButton

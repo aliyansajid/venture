@@ -34,16 +34,15 @@ model User {
   phone          String?          @map("phone")
   password       String?          @map("password")
   image          String?          @map("image")
-  otp            String?          @map("otp")
-  otpExpiry      DateTime?        @map("otpExpiry")
-  emailVerified  Boolean          @default(false) @map("emailVerified")
-  role           String           @default("client") @map("role")
+  role           String           @default("Client") @map("role")
   createdAt      DateTime         @default(now()) @map("createdAt")
   updatedAt      DateTime         @updatedAt @map("updatedAt")
   accounts       Account[]
   notes          Note[]           
   teamLead       Team[]           @relation("TeamLead")
-  TeamMembership TeamMembership[]
+  projects       Project[]        @relation("UserProjects")
+  projectsAsClient Project[]      @relation("ClientProjects")
+  tasksAssigned  Task[]           @relation("UserTasks")
 
   @@map("Users")
 }
@@ -64,21 +63,50 @@ model Team {
   teamName       String
   teamLead       User             @relation("TeamLead", fields: [teamLeadId], references: [id])
   teamLeadId     String           @db.ObjectId
+  membersIds     String[]         @db.ObjectId
   description    String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  TeamMembership TeamMembership[] 
+  projects       Project[]        @relation("TeamProjects")
 
   @@map("Teams")
 }
 
-model TeamMembership {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  teamId    String @db.ObjectId
-  userId    String @db.ObjectId
-  team      Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  user      User   @relation(fields: [userId], references: [id])
+model Project {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String?
+  dueDate         DateTime
+  budget          Int?
+  teamId          String       @db.ObjectId
+  clientId        String?      @db.ObjectId
+  userId          String
+  team            Team         @relation("TeamProjects", fields: [teamId], references: [id])
+  client          User?        @relation("ClientProjects", fields: [clientId], references: [id])
+  user            User         @relation("UserProjects", fields: [userId], references: [id], onDelete: Cascade)
+  tasks           Task[]       @relation("ProjectTasks")
+  totalTasks      Int          @default(0)
+  completedTasks  Int          @default(0)
+  priority        String       @default("Normal")
+  status          String       @default("In Progress")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 
-  @@unique([teamId, userId])
-  @@map("TeamMemberships")
+  @@map("Projects")
+}
+
+model Task {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  priority    String       @default("Normal")
+  status      String       @default("Not Started")
+  projectId   String       @db.ObjectId
+  assignedTo  String       @db.ObjectId
+  project     Project      @relation("ProjectTasks", fields: [projectId], references: [id], onDelete: Cascade)
+  assignee    User         @relation("UserTasks", fields: [assignedTo], references: [id], onDelete: Cascade)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("Tasks")
 }

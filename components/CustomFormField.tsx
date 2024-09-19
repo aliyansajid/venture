@@ -1,5 +1,14 @@
 import Image from "next/image";
 import { Control } from "react-hook-form";
+import { format } from "date-fns";
+import { Input } from "./ui/input";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Textarea } from "./ui/textarea";
+import * as React from "react";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   FormControl,
   FormField,
@@ -7,9 +16,11 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { Input } from "./ui/input";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
-import { Textarea } from "./ui/textarea";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -40,6 +51,7 @@ interface CustomProps {
 }
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
+  const [date, setDate] = React.useState<Date>();
   const {
     fieldType,
     placeholder,
@@ -52,6 +64,8 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   let inputType = "text";
   if (name === "password") {
     inputType = "password";
+  } else if (name === "budget") {
+    inputType = "number";
   }
 
   switch (fieldType) {
@@ -93,10 +107,12 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
 
     case FormFieldType.SELECT:
       return (
-        <Select onValueChange={field.onChange} value={field.value}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder={placeholder || "Select an option"} />
-          </SelectTrigger>
+        <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormControl>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={props.placeholder} />
+            </SelectTrigger>
+          </FormControl>
           <SelectContent className={className}>{props.children}</SelectContent>
         </Select>
       );
@@ -107,6 +123,43 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           <Textarea placeholder={placeholder} {...field} />
         </FormControl>
       );
+
+    case FormFieldType.DATE_PICKER:
+      return (
+        <Popover>
+          <PopoverTrigger asChild>
+            <FormControl>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-[280px] justify-start text-left font-normal border-interaction-outline-base hover:bg-white hover:border-interaction-outline-hover",
+                  className,
+                  !field.value && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2" size={16} />
+                {field.value ? (
+                  format(field.value, "PPP")
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </FormControl>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={field.value}
+              onSelect={field.onChange}
+              disabled={(date) =>
+                date > new Date() || date < new Date("1900-01-01")
+              }
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      );
+
     default:
       return null;
   }

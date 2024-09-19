@@ -53,18 +53,6 @@ export async function fetchTeam(teamId: string) {
             email: true,
           },
         },
-        TeamMembership: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -76,13 +64,27 @@ export async function fetchTeam(teamId: string) {
       };
     }
 
+    const members = await db.user.findMany({
+      where: {
+        id: {
+          in: team.membersIds,
+        },
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+      },
+    });
+
     return {
       success: true,
       team: {
         id: team.id,
         teamName: team.teamName,
         teamLead: team.teamLead,
-        teamMembers: team.TeamMembership.map((membership) => membership.user),
+        teamMembers: members,
         description: team.description,
         createdAt: team.createdAt,
       },
@@ -114,34 +116,42 @@ export async function fetchTeams(page: number = 1, limit: number = 10) {
             image: true,
           },
         },
-        TeamMembership: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-                role: true,
-                image: true,
-              },
-            },
-          },
-        },
       },
     });
 
     const totalTeams = await db.team.count();
 
+    const teamsWithMembers = await Promise.all(
+      teams.map(async (team) => {
+        const members = await db.user.findMany({
+          where: {
+            id: {
+              in: team.membersIds,
+            },
+          },
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+            image: true,
+          },
+        });
+
+        return {
+          id: team.id,
+          teamName: team.teamName,
+          teamLead: team.teamLead,
+          teamMembers: members,
+          createdAt: team.createdAt,
+        };
+      })
+    );
+
     return {
       success: true,
-      teams: teams.map((team) => ({
-        id: team.id,
-        teamName: team.teamName,
-        teamLead: team.teamLead,
-        teamMembers: team.TeamMembership.map((membership) => membership.user),
-        createdAt: team.createdAt,
-      })),
+      teams: teamsWithMembers,
       totalTeams,
       totalPages: Math.ceil(totalTeams / limit),
     };
@@ -165,14 +175,8 @@ export async function createTeam(values: any) {
         teamLead: {
           connect: { id: teamLead },
         },
+        membersIds: teamMembers,
         description,
-        TeamMembership: {
-          create: teamMembers.map((memberId: string) => ({
-            user: {
-              connect: { id: memberId },
-            },
-          })),
-        },
       },
     });
 
@@ -203,41 +207,31 @@ export async function updateTeam(teamId: string, data: any) {
         teamLead: {
           connect: { id: teamLead },
         },
-        TeamMembership: {
-          deleteMany: {},
-          create: teamMembers.map((memberId: string) => ({
-            user: { connect: { id: memberId } },
-          })),
+        membersIds: teamMembers,
+      },
+    });
+
+    const members = await db.user.findMany({
+      where: {
+        id: {
+          in: updatedTeam.membersIds,
         },
       },
-      include: {
-        teamLead: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-          },
-        },
-        TeamMembership: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-              },
-            },
-          },
-        },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
       },
     });
 
     return {
       success: true,
       message: "Team updated successfully.",
-      team: updatedTeam,
+      team: {
+        ...updatedTeam,
+        members,
+      },
     };
   } catch (error) {
     console.error("Error updating team: ", error);
