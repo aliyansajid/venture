@@ -104,3 +104,71 @@ export async function fetchProjects(page: number = 1, limit: number = 10) {
     };
   }
 }
+
+export async function fetchProjectById(projectId: string) {
+  try {
+    const project = await db.project.findUnique({
+      where: { id: projectId },
+      include: {
+        team: {
+          select: {
+            id: true,
+            teamName: true,
+            teamLead: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+        client: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    return {
+      success: true,
+      project,
+    };
+  } catch (error) {
+    console.error("Error fetching project by ID:", error);
+    return {
+      success: false,
+      message: "Failed to fetch project.",
+    };
+  }
+}
+
+export async function updateProject(projectId: string, data: any) {
+  try {
+    const updatedProject = await db.project.update({
+      where: { id: projectId },
+      data: {
+        ...data,
+        dueDate: new Date(data.dueDate),
+      },
+    });
+
+    return {
+      success: true,
+      message: `Project ${updatedProject.title.toLowerCase()} updated successfully.`,
+      project: updatedProject,
+    };
+  } catch (error) {
+    console.error("Failed to update project", error);
+    return {
+      success: false,
+      message: "Failed to update the project.",
+    };
+  }
+}

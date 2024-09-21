@@ -75,6 +75,8 @@ export async function fetchTeam(teamId: string) {
         firstName: true,
         lastName: true,
         email: true,
+        image: true,
+        role: true,
       },
     });
 

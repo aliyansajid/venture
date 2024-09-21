@@ -145,10 +145,6 @@ export async function deleteUser(userId: string) {
   }
 
   try {
-    await db.teamMembership.deleteMany({
-      where: { userId: userId },
-    });
-
     await db.note.deleteMany({
       where: { authorId: userId },
     });

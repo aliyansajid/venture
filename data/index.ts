@@ -90,3 +90,16 @@ export const noteActions = [
     modalDescription: "Are you sure you want to permanently delete this note?",
   },
 ];
+
+export const settingLinks = [
+  {
+    label: "General Information",
+    section: "general",
+    icon: "/icons/ChartPie.svg",
+  },
+  {
+    label: "Members",
+    section: "members",
+    icon: "/icons/ChartPie.svg",
+  },
+];

@@ -73,6 +73,14 @@ export interface EditUserProps {
 export interface NoteDetailProps {
   params: { id: string };
 }
+
+export interface ProjectDetailProps {
+  params: { id: string };
+}
+
+export interface ProjectFormProps {
+  projectId?: string;
+}
 export interface NoteTagsProps {
   noteId: string;
 }
@@ -197,4 +205,30 @@ interface DataTableViewOptionsProps<TData> {
 export interface FilterValue {
   key: string;
   value: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  description: string | null;
+  dueDate: Date;
+  budget: number | null;
+  teamId: string;
+  clientId: string | null;
+  userId: string;
+  totalTasks: number;
+  completedTasks: number;
+  priority: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TeamMember {
+  id: string;
+  image: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
 }

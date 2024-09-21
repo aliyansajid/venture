@@ -52,18 +52,21 @@ export const teamSchema = z.object({
 });
 
 export const projectSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  title: z.string({ required_error: "Title is required" }),
+  description: z.string().optional(),
+  client: z.string().optional(),
   team: z.string({
     required_error: "Please select a team.",
   }),
   dueDate: z.date({
     required_error: "A due date is required.",
   }),
-  priority: z.enum(["High", "Medium", "Low", "Normal"]).optional(),
+  priority: z.string().optional(),
   budget: z.preprocess(
     (val) => Number(val),
     z.number().min(0, "Budget must be a positive number.")
   ),
+  status: z.string().optional(),
 });
 
 export const roleDisplayNames: { [key: string]: string } = {

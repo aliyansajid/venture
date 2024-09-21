@@ -12,13 +12,20 @@ import { SelectItem } from "@/components/ui/select";
 import { projectSchema } from "@/lib/utils";
 import { fetchTeams, createProject } from "@/app/actions/projectActions";
 import { useToast } from "../ui/use-toast";
+import { Project } from "@/types/next-auth";
 
 interface Team {
   id: string;
   teamName: string;
 }
 
-const ProjectForm = () => {
+const ProjectForm = ({
+  projectId,
+  project,
+}: {
+  projectId: string;
+  project: Project;
+}) => {
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,9 +33,15 @@ const ProjectForm = () => {
   const { toast } = useToast();
 
   const formSchema = projectSchema;
-
+  const defaultValues = {
+    ...project,
+    budget: project.budget ?? undefined,
+    description: project.description ?? undefined,
+    team: project.teamId ?? "",
+  };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues,
   });
 
   useEffect(() => {

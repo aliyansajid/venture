@@ -136,6 +136,7 @@ const EditUser = ({ userId, onSuccess }: EditUserProps) => {
               control={form.control}
               name="role"
               label="Role"
+              placeholder="Select a role"
             >
               <SelectItem value="Admin">Admin</SelectItem>
               <SelectItem value="Team Lead">Team Lead</SelectItem>
