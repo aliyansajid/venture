@@ -1,48 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { fetchProjectById } from "@/app/actions/projectActions";
+import { fetchProject } from "@/app/actions/projectActions";
 import { fetchTeam } from "@/app/actions/teamActions";
-import { Project, ProjectFormProps, TeamMember } from "@/types/next-auth";
+import { ProjectFormProps, TeamMember } from "@/types/next-auth";
 import { settingLinks } from "@/data";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import GeneralInformation from "@/components/Projects/GeneralInformation";
 import Members from "@/components/Projects/Members";
+import { toast } from "../ui/use-toast";
 
-const Settings = ({
-  projectId,
-  project,
-}: {
-  projectId: string;
-  project: Project;
-}) => {
+const Settings = ({ projectId, project }: ProjectFormProps) => {
   const [activeSection, setActiveSection] = useState("general");
   const [teamMembers, setTeamMembers] = useState<TeamMember[] | null>(null);
 
-  const fetchProjectData = async () => {
+  const handleFetchProject = async () => {
     try {
-      const result = await fetchProjectById(projectId as string);
+      if (projectId) {
+        const result = await fetchProject(projectId);
 
-      if (result.success) {
-        const team = await fetchTeam(result.project?.teamId as string);
-        if (team.success && team.team) {
-          const members = team.team.teamMembers.map((member: any) => ({
-            ...member,
-            image: member.image,
-            role: member.role,
-          }));
-          setTeamMembers(members ?? null);
-        } else {
-          setTeamMembers(null);
+        if (result.success) {
+          const team = await fetchTeam(result.project?.teamId as string);
+          if (team.success && team.team) {
+            const members = team.team.teamMembers.map((member: any) => ({
+              ...member,
+              image: member.image,
+              role: member.role,
+            }));
+            setTeamMembers(members ?? null);
+          } else {
+            setTeamMembers(null);
+          }
         }
       }
     } catch (error) {
-      console.error("Failed to fetch project or team:", error);
+      toast({
+        description: "Failed to fetch project or team.",
+        variant: "destructive",
+      });
     }
   };
 
   useEffect(() => {
-    fetchProjectData();
+    handleFetchProject();
   }, [projectId]);
 
   if (!project) return <div>Loading...</div>;
@@ -87,7 +87,7 @@ const Settings = ({
       </nav>
 
       <div className="w-3/4 p-8">
-        {activeSection === "general" && project && (
+        {activeSection === "general" && projectId && project && (
           <GeneralInformation projectId={projectId} project={project} />
         )}
         {activeSection === "members" && teamMembers && (

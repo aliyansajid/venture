@@ -75,20 +75,22 @@ model Team {
 model Project {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
   title           String
-  description     String?
   dueDate         DateTime
   budget          Int?
+  priority        String       
+  status          String?
+  totalTasks      Int          @default(0)
+  completedTasks  Int          @default(0)
+  
   teamId          String       @db.ObjectId
   clientId        String?      @db.ObjectId
   userId          String
+  
   team            Team         @relation("TeamProjects", fields: [teamId], references: [id])
   client          User?        @relation("ClientProjects", fields: [clientId], references: [id])
   user            User         @relation("UserProjects", fields: [userId], references: [id], onDelete: Cascade)
   tasks           Task[]       @relation("ProjectTasks")
-  totalTasks      Int          @default(0)
-  completedTasks  Int          @default(0)
-  priority        String       
-  status          String?       
+        
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 

@@ -24,6 +24,32 @@ export async function fetchTeams() {
   }
 }
 
+export async function fetchClients() {
+  try {
+    const clients = await db.user.findMany({
+      where: { role: "client" },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        image: true,
+        email: true,
+      },
+    });
+
+    return {
+      success: true,
+      clients,
+    };
+  } catch (error) {
+    console.error("Error fetching clients:", error);
+    return {
+      success: false,
+      message: "Failed to fetch clients.",
+    };
+  }
+}
+
 export async function createProject(data: any) {
   try {
     const team = await db.team.findUnique({
@@ -31,7 +57,10 @@ export async function createProject(data: any) {
     });
 
     if (!team) {
-      throw new Error("Team not found");
+      return {
+        success: false,
+        message: "Team not found.",
+      };
     }
 
     const newProject = await db.project.create({
@@ -42,12 +71,13 @@ export async function createProject(data: any) {
         teamId: team.id,
         userId: team.teamLeadId,
         priority: data.priority,
+        clientId: data.client,
       },
     });
 
     return {
       success: true,
-      message: `Project ${newProject.title.toLowerCase()} created sucessfully.`,
+      message: `Project ${newProject.title.toLowerCase()} created successfully.`,
       project: newProject,
     };
   } catch (error) {
@@ -105,7 +135,7 @@ export async function fetchProjects(page: number = 1, limit: number = 10) {
   }
 }
 
-export async function fetchProjectById(projectId: string) {
+export async function fetchProject(projectId: string) {
   try {
     const project = await db.project.findUnique({
       where: { id: projectId },
@@ -133,7 +163,10 @@ export async function fetchProjectById(projectId: string) {
     });
 
     if (!project) {
-      throw new Error("Project not found");
+      return {
+        success: false,
+        message: "Project not found.",
+      };
     }
 
     return {
@@ -141,7 +174,7 @@ export async function fetchProjectById(projectId: string) {
       project,
     };
   } catch (error) {
-    console.error("Error fetching project by ID:", error);
+    console.error("Error fetching project: ", error);
     return {
       success: false,
       message: "Failed to fetch project.",
@@ -165,7 +198,7 @@ export async function updateProject(projectId: string, data: any) {
       project: updatedProject,
     };
   } catch (error) {
-    console.error("Failed to update project", error);
+    console.error("Failed to update project: ", error);
     return {
       success: false,
       message: "Failed to update the project.",

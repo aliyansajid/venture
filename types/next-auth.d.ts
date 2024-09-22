@@ -36,6 +36,14 @@ export interface User {
   image: string | null;
 }
 
+export interface Client {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: string | null;
+}
+
 export interface Team {
   id: string;
   teamName: string;
@@ -60,18 +68,57 @@ export interface TeamUser {
   image: string | null;
 }
 
-export interface AddTeamFormProps {
-  teamId?: string;
-  onSuccess?: () => void;
+export interface TeamMember {
+  id: string;
+  image: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
 }
 
-export interface EditUserProps {
-  userId?: string;
-  onSuccess?: () => void;
+export interface ModalDialogProps {
+  isOpen: boolean;
+  title: string;
+  description: string;
+  onClose: () => void;
+  children?: React.ReactNode;
 }
 
-export interface NoteDetailProps {
-  params: { id: string };
+export interface SectionHeaderProps {
+  title: string;
+  children?: React.ReactNode;
+}
+
+export interface UserAction {
+  label: string;
+  icon: string;
+  route?: string;
+  action?: () => void;
+  modalTitle?: string;
+  modalDescription?: string;
+  component?: React.ComponentType;
+}
+
+export interface FilterValue {
+  key: string;
+  value: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  dueDate: Date;
+  priority: string;
+  status?: string | null;
+  budget?: number | null;
+  totalTasks: number;
+  completedTasks: number;
+  teamId: string;
+  clientId?: string | null;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ProjectDetailProps {
@@ -80,7 +127,18 @@ export interface ProjectDetailProps {
 
 export interface ProjectFormProps {
   projectId?: string;
+  project?: Project;
 }
+
+export interface AddTeamFormProps {
+  teamId?: string;
+  onSuccess?: () => void;
+}
+
+export interface NoteDetailProps {
+  params: { id: string };
+}
+
 export interface NoteTagsProps {
   noteId: string;
 }
@@ -110,29 +168,6 @@ export interface NoteHeaderProps {
   isSaving: boolean;
   noteId: string;
   children?: React.ReactNode;
-}
-
-export interface ModalDialogProps {
-  isOpen: boolean;
-  title: string;
-  description: string;
-  onClose: () => void;
-  children?: React.ReactNode;
-}
-
-export interface SectionHeaderProps {
-  title: string;
-  children?: React.ReactNode;
-}
-
-export interface UserAction {
-  label: string;
-  icon: string;
-  route?: string;
-  action?: () => void;
-  modalTitle?: string;
-  modalDescription?: string;
-  component?: React.ComponentType;
 }
 
 export interface DataTableColumnHeaderProps<TData, TValue>
@@ -200,35 +235,4 @@ interface DataTableToolbarProps<TData extends { id: string }> {
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
   className?: string;
-}
-
-export interface FilterValue {
-  key: string;
-  value: string;
-}
-
-export interface Project {
-  id: string;
-  title: string;
-  description: string | null;
-  dueDate: Date;
-  budget: number | null;
-  teamId: string;
-  clientId: string | null;
-  userId: string;
-  totalTasks: number;
-  completedTasks: number;
-  priority: string;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface TeamMember {
-  id: string;
-  image: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
 }
