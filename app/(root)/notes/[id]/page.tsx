@@ -38,7 +38,9 @@ const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
 
         if (result.success) {
           setTitle(result.note?.title as string);
-          setContent(result.note?.description ?? "");
+          const noteContent = result.note?.description ?? "";
+          setContent(noteContent);
+          contentRef.current = noteContent;
         } else {
           setNoteNotFound(true);
           showToast(
@@ -76,6 +78,16 @@ const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
 
   const handleSaveContent = async () => {
     const currentContent = contentRef.current;
+
+    if (currentContent.trim() === "" || currentContent === content) {
+      showToast(
+        currentContent.trim() === ""
+          ? "Content cannot be blank."
+          : "No changes made to the content.",
+        "destructive"
+      );
+      return;
+    }
 
     setIsSaving(true);
     try {
