@@ -11,10 +11,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SelectItem } from "@/components/ui/select";
 import CustomButton, { ButtonVariant } from "../CustomButton";
 import { useToast } from "@/components/ui/use-toast";
-import { EditUserProps } from "@/types/next-auth";
 import { fetchUser, updateUser } from "@/app/actions/userActions";
 
-const EditUser = ({ userId, onSuccess }: EditUserProps) => {
+const EditUser = ({
+  userId,
+  onSuccess,
+}: {
+  userId: string;
+  onSuccess: () => void;
+}) => {
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();

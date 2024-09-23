@@ -9,10 +9,10 @@ const ProjectCard = ({
   client,
   completedTasks,
   totalTasks,
-  teamMembers,
+  teamMembers = [],
 }: ProjectCardProps) => {
-  const displayedMembers = teamMembers.slice(0, 3);
-  const remainingMembers = teamMembers.length - displayedMembers.length;
+  const displayedMembers = teamMembers?.slice(0, 3) ?? [];
+  const remainingMembers = teamMembers?.length - displayedMembers.length ?? 0;
 
   const tooltipItems = displayedMembers.map((member, index) => ({
     id: index,
