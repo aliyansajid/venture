@@ -1,4 +1,3 @@
-import React from "react";
 import { ProjectCardProps } from "@/types/next-auth";
 import { AnimatedTooltip } from "../ui/animated-tooltip";
 
@@ -12,7 +11,9 @@ const ProjectCard = ({
   teamMembers = [],
 }: ProjectCardProps) => {
   const displayedMembers = teamMembers?.slice(0, 3) ?? [];
-  const remainingMembers = teamMembers?.length - displayedMembers.length ?? 0;
+  const remainingMembers = teamMembers?.length
+    ? teamMembers.length - displayedMembers.length
+    : 0;
 
   const tooltipItems = displayedMembers.map((member, index) => ({
     id: index,
