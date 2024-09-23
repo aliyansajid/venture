@@ -100,30 +100,60 @@ export async function fetchProjects(page: number = 1, limit: number = 10) {
         team: {
           select: {
             id: true,
-            teamName: true,
-            teamLead: {
-              select: {
-                firstName: true,
-                lastName: true,
-              },
-            },
+            membersIds: true,
           },
         },
         client: {
           select: {
             id: true,
-            firstName: true,
-            lastName: true,
+            image: true,
           },
         },
       },
+    });
+
+    const teamMembersData = await Promise.all(
+      projects.map(async (project) => {
+        const teamMembers = await db.user.findMany({
+          where: {
+            id: {
+              in: project.team.membersIds,
+            },
+          },
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            role: true,
+            image: true,
+          },
+        });
+        return {
+          projectId: project.id,
+          teamMembers,
+        };
+      })
+    );
+
+    const projectsWithTeamMembers = projects.map((project) => {
+      const membersData = teamMembersData.find(
+        (members) => members.projectId === project.id
+      );
+
+      return {
+        ...project,
+        team: {
+          ...project.team,
+          teamMembers: membersData?.teamMembers || [],
+        },
+      };
     });
 
     const totalProjects = await db.project.count();
 
     return {
       success: true,
-      projects,
+      projects: projectsWithTeamMembers,
       totalPages: Math.ceil(totalProjects / limit),
     };
   } catch (error) {

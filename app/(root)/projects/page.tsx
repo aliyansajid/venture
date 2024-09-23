@@ -61,7 +61,16 @@ const Projects = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-8">
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard
+              key={project.id}
+              id={project.id}
+              title={project.title}
+              dueDate={project.dueDate}
+              totalTasks={project.totalTasks}
+              completedTasks={project.completedTasks}
+              client={project.client}
+              teamMembers={project.team.teamMembers}
+            />
           ))}
         </div>
       )}

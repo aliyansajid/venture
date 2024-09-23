@@ -38,26 +38,29 @@ export interface User {
 
 export interface Client {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  image: string | null;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  image?: string | null;
 }
 
 export interface Team {
   id: string;
-  teamName: string;
-  teamLead: {
+  teamName?: string;
+  teamLead?: {
     firstName: string;
     lastName: string;
     email: string;
   };
   teamMembers: {
-    firstName: string;
-    lastName: string;
-    email: string;
+    id: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    image?: string | null;
+    role?: string;
   }[];
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export interface TeamUser {
@@ -117,8 +120,20 @@ export interface Project {
   teamId: string;
   clientId?: string | null;
   userId: string;
+  team: Team;
+  client?: Client | null;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ProjectCardProps {
+  id: string;
+  title: string;
+  dueDate: Date;
+  totalTasks: number;
+  completedTasks: number;
+  client?: Client | null;
+  teamMembers: Team["teamMembers"];
 }
 
 export interface ProjectDetailProps {
