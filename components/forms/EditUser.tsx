@@ -17,8 +17,8 @@ const EditUser = ({
   userId,
   onSuccess,
 }: {
-  userId: string;
-  onSuccess: () => void;
+  userId?: string;
+  onSuccess?: () => void;
 }) => {
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
