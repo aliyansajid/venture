@@ -1,26 +1,25 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import NoteHeader from "@/components/Notes/NoteHeader";
 import TopHeader from "@/components/TopHeader";
 import Tiptap from "@/components/Editor/Tiptap";
 import Loader from "@/components/Loader";
 import { useToast } from "@/components/ui/use-toast";
-import { NoteDetailProps } from "@/types/next-auth";
 import {
   fetchNote,
   updateNoteContent,
   updateNoteTitle,
 } from "@/app/actions/noteActions";
 
-const NoteDetail = ({ params: { id } }: NoteDetailProps) => {
+const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [isFetching, setIsFetching] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [noteNotFound, setNoteNotFound] = useState(false);
-  const [content, setContent] = useState("");
   const contentRef = useRef<string>("");
-  const { toast } = useToast();
 
   const showToast = (
     message: string,
@@ -38,11 +37,14 @@ const NoteDetail = ({ params: { id } }: NoteDetailProps) => {
         const result = await fetchNote(id);
 
         if (result.success) {
-          setTitle(result.note?.title ?? "");
-          setContent(result.note?.content ?? "");
+          setTitle(result.note?.title as string);
+          setContent(result.note?.description ?? "");
         } else {
           setNoteNotFound(true);
-          showToast(result.message ?? "An error occurred", "destructive");
+          showToast(
+            result.message ?? "An unexpected error occurred.",
+            "destructive"
+          );
         }
       } catch (error) {
         showToast("An error occurred while fetching the note.", "destructive");

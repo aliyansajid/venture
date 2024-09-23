@@ -44,6 +44,25 @@ export interface Client {
   image?: string | null;
 }
 
+interface Note {
+  id: string;
+  title: string;
+  description?: string | null;
+  tags: string[];
+  authorName?: string;
+  authorImage?: string;
+  createdAt: Date;
+}
+
+export interface NoteHeaderProps {
+  title: string;
+  onUpdateTitle: (newTitle: string) => Promise<void>;
+  onSave: () => void;
+  isSaving: boolean;
+  noteId: string;
+  children?: React.ReactNode;
+}
+
 export interface Team {
   id: string;
   teamName?: string;
@@ -148,41 +167,6 @@ export interface ProjectFormProps {
 export interface AddTeamFormProps {
   teamId?: string;
   onSuccess?: () => void;
-}
-
-export interface NoteDetailProps {
-  params: { id: string };
-}
-
-export interface NoteTagsProps {
-  noteId: string;
-}
-
-export type FormData = {
-  tags: string[];
-};
-
-export interface AddNoteButtonProps {
-  authorId: string;
-}
-
-export interface NoteCardProps {
-  id: string;
-  title: string;
-  description: string;
-  tags: string[];
-  authorName: string;
-  authorImage: string;
-  timestamp: string;
-}
-
-export interface NoteHeaderProps {
-  title: string;
-  onUpdateTitle: (newTitle: string) => Promise<void>;
-  onSave: () => void;
-  isSaving: boolean;
-  noteId: string;
-  children?: React.ReactNode;
 }
 
 export interface DataTableColumnHeaderProps<TData, TValue>

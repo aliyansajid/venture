@@ -1,22 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CustomButton, { ButtonVariant } from "../CustomButton";
 import { useToast } from "@/components/ui/use-toast";
-import { AddNoteButtonProps } from "@/types/next-auth";
 import { createNote } from "@/app/actions/noteActions";
+import { useSession } from "next-auth/react";
 
-const AddNoteButton = ({ authorId }: AddNoteButtonProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+const AddNoteButton = () => {
   const { toast } = useToast();
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
+  const isButtonDisabled = isLoading || !session?.user?.id;
 
   const handleCreateNote = async () => {
+    if (!session?.user?.id) {
+      toast({
+        description: "Please log in again to add a note.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
 
-      const result = await createNote(authorId);
+      const result = await createNote(session.user.id);
 
       if (result.success) {
         router.push(`/notes/${result.id}`);
@@ -26,10 +36,6 @@ const AddNoteButton = ({ authorId }: AddNoteButtonProps) => {
           variant: "destructive",
         });
       }
-      toast({
-        description: result.message,
-        variant: result.success ? "default" : "destructive",
-      });
     } catch (error) {
       toast({
         description: "An error occurred while creating the note.",
@@ -44,7 +50,7 @@ const AddNoteButton = ({ authorId }: AddNoteButtonProps) => {
     <CustomButton
       variant={ButtonVariant.DEFAULT}
       text={"Add Note"}
-      disabled={isLoading}
+      disabled={isButtonDisabled}
       isLoading={isLoading}
       onClick={handleCreateNote}
     />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import TopHeader from "@/components/TopHeader";
 import SectionHeader from "@/components/SectionHeader";
@@ -8,12 +8,12 @@ import AddNoteButton from "@/components/Notes/AddNoteButton";
 import NoteCard from "@/components/Notes/NoteCard";
 import Loader from "@/components/Loader";
 import { useToast } from "@/components/ui/use-toast";
-import { formatTimestamp } from "@/lib/utils";
 import { fetchNotes } from "@/app/actions/noteActions";
+import { Note } from "@/types/next-auth";
 
 const Notes = () => {
   const { data: session } = useSession();
-  const [notes, setNotes] = useState<any[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -49,7 +49,7 @@ const Notes = () => {
     <section>
       <TopHeader />
       <SectionHeader title="Notes">
-        <AddNoteButton authorId={session?.user?.id as string} />
+        <AddNoteButton />
       </SectionHeader>
       {isLoading ? (
         <Loader />
@@ -66,11 +66,11 @@ const Notes = () => {
               key={note.id}
               id={note.id}
               title={note.title}
-              description={note.content}
+              description={note.description}
               tags={note.tags}
-              authorName={session?.user.name || "Unknown Author"}
-              authorImage={session?.user.image || "/icons/UserCircle.svg"}
-              timestamp={formatTimestamp(note.createdAt)}
+              authorName={session?.user?.name}
+              authorImage={session?.user?.image}
+              createdAt={note.createdAt}
             />
           ))}
         </div>

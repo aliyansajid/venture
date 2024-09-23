@@ -9,11 +9,10 @@ import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { XCircle } from "lucide-react";
-import { NoteTagsProps } from "@/types/next-auth";
 import { toast } from "../ui/use-toast";
 import { fetchNote, updateNoteTags } from "@/app/actions/noteActions";
 
-const NoteTags = ({ noteId }: NoteTagsProps) => {
+const NoteTags = ({ noteId }: { noteId: string }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +45,7 @@ const NoteTags = ({ noteId }: NoteTagsProps) => {
       try {
         const result = await fetchNote(noteId);
         if (result.success) {
-          setTags(result.note?.tags as string[]);
+          setTags(result.note?.tags || []);
         } else {
           toast({
             description: "Failed to fetch tags.",
@@ -142,7 +141,7 @@ const NoteTags = ({ noteId }: NoteTagsProps) => {
               )}
             </div>
             <div className="text-sm text-dark-secondary mt-2">
-              5 tags maximum. Use letters and numbers only.
+              3 tags maximum. Use letters and numbers only.
             </div>
           </>
         )}

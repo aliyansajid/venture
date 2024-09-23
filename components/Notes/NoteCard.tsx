@@ -1,24 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
-import { NoteCardProps } from "@/types/next-auth";
-import { sanitizeAndStyleHtml, tagColors } from "@/lib/utils";
+import { Note } from "@/types/next-auth";
+import { formatTimestamp, sanitizeAndStyleHtml, tagColors } from "@/lib/utils";
 
 const NoteCard = ({
   id,
   title,
-  description = "",
+  description,
   tags,
   authorName,
   authorImage,
-  timestamp,
-}: NoteCardProps) => {
+  createdAt,
+}: Note) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const getTagColor = (index: number) => tagColors[index % tagColors.length];
-  const styledDescription = sanitizeAndStyleHtml(description);
+  const styledDescription = sanitizeAndStyleHtml(description || "");
 
   return (
     <Link href={`/notes/${id}`} passHref>
@@ -52,8 +52,8 @@ const NoteCard = ({
           <div className="flex items-center gap-3">
             {isImageLoading && <Skeleton className="w-6 h-6 rounded-full" />}
             <Image
-              src={authorImage}
-              alt={authorName}
+              src={authorImage || "Unknown Author"}
+              alt={authorName || "/icons/UserCircle.svg"}
               className={`w-6 h-6 rounded-full ${
                 isImageLoading ? "hidden" : "block"
               }`}
@@ -67,7 +67,7 @@ const NoteCard = ({
             </span>
           </div>
           <span className="text-xs text-dark-secondary font-medium">
-            {timestamp}
+            {formatTimestamp(createdAt.toString())}
           </span>
         </div>
       </div>
