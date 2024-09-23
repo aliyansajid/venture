@@ -174,12 +174,6 @@ export async function fetchProject(projectId: string) {
           select: {
             id: true,
             teamName: true,
-            teamLead: {
-              select: {
-                firstName: true,
-                lastName: true,
-              },
-            },
           },
         },
         client: {

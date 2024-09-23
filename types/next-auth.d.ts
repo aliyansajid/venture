@@ -71,7 +71,7 @@ export interface Team {
     lastName: string;
     email: string;
   };
-  teamMembers: {
+  teamMembers?: {
     id: string;
     firstName?: string;
     lastName?: string;
