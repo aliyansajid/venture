@@ -35,7 +35,7 @@ model User {
   password       String?          @map("password")
   emailVerified  Boolean?         @default(false)
   otp            String?          @map("otp")
-  otpExpiry      String?          @map("otpExpiry")
+  otpExpiry      DateTime?        @map("otpExpiry")
   image          String?          @map("image")
   role           String           @default("Client") @map("role")
   createdAt      DateTime         @default(now()) @map("createdAt")
