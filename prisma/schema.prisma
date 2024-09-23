@@ -33,6 +33,7 @@ model User {
   email          String           @unique @map("email")
   phone          String?          @map("phone")
   password       String?          @map("password")
+  emailVerified  Boolean?         @default(false)
   image          String?          @map("image")
   role           String           @default("Client") @map("role")
   createdAt      DateTime         @default(now()) @map("createdAt")
