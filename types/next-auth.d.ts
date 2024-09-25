@@ -82,21 +82,20 @@ export interface NoteHeaderProps {
 
 export interface Team {
   id: string;
-  teamName?: string;
-  teamLead?: {
+  teamName: string;
+  teamLead: {
     firstName: string;
     lastName: string;
-    email: string;
+    image: string | null;
   };
-  teamMembers?: {
+  teamMembers: {
     id: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    image?: string | null;
-    role?: string;
+    firstName: string;
+    lastName: string;
+    image: string | null;
+    role: string;
   }[];
-  createdAt?: Date;
+  createdAt: Date;
 }
 
 export interface TeamUser {

@@ -89,7 +89,7 @@ export const teamColumns: ColumnDef<any>[] = [
       const formattedMembers = members.slice(0, 3).map((member: any) => ({
         id: member.id,
         name: `${member.firstName} ${member.lastName}`,
-        designation: roleDisplayNames[member.role] || "No role assigned",
+        designation: member.role,
         image: member.image || "/icons/UserCircle.svg",
       }));
 

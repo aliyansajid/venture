@@ -48,10 +48,10 @@ export const userEditSchema = z.object({
 });
 
 export const teamSchema = z.object({
-  teamName: z.string().min(1, "Team name is required"),
-  teamLead: z.string().min(1, "Team lead is required"),
+  teamName: z.string({ required_error: "Team name is required" }),
+  teamLead: z.string({ required_error: "Team Lead is required" }),
   teamMembers: z
-    .array(z.string().min(1))
+    .array(z.string({ required_error: "Team members are required" }).min(1))
     .min(1, "At least one team member is required")
     .max(10, "You can select up to 10 team members"),
   description: z.string().optional(),
@@ -69,13 +69,6 @@ export const projectSchema = z.object({
   ),
   client: z.string().optional(),
 });
-
-export const roleDisplayNames: { [key: string]: string } = {
-  admin: "Admin",
-  "team-lead": "Team Lead",
-  "team-member": "Team Member",
-  client: "Client",
-};
 
 export const getInitials = (name: string) => {
   if (!name) return "US";
