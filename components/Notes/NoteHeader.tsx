@@ -1,5 +1,12 @@
 "use client";
 
+import { toast } from "../ui/use-toast";
+import { noteActions } from "@/data/index";
+import { useRouter } from "next/navigation";
+import ModalDialog from "@/components/ModalDialog";
+import { NoteHeaderProps } from "@/types/next-auth";
+import { deleteNote } from "@/app/actions/noteActions";
+import { EllipsisVertical, SquarePen } from "lucide-react";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import CustomButton, { ButtonVariant } from "@/components/CustomButton";
 import {
@@ -8,13 +15,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import ModalDialog from "@/components/ModalDialog";
-import { noteActions } from "@/data/index";
-import { toast } from "../ui/use-toast";
-import { EllipsisVertical, SquarePen } from "lucide-react";
-import { NoteHeaderProps } from "@/types/next-auth";
-import { deleteNote } from "@/app/actions/noteActions";
 
 const NoteHeader = ({
   title,
@@ -33,7 +33,6 @@ const NoteHeader = ({
     description: "",
   });
   const [modalChildren, setModalChildren] = useState<React.ReactNode>(null);
-
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -86,6 +85,10 @@ const NoteHeader = ({
       const result = await deleteNote(noteId);
 
       if (!result.success) {
+        toast({
+          description: result.message,
+          variant: "destructive",
+        });
         return;
       }
 

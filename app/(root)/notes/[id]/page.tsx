@@ -1,35 +1,24 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import NoteHeader from "@/components/Notes/NoteHeader";
+import Loader from "@/components/Loader";
+import { useState, useEffect } from "react";
 import TopHeader from "@/components/TopHeader";
 import Tiptap from "@/components/Editor/Tiptap";
-import Loader from "@/components/Loader";
 import { useToast } from "@/components/ui/use-toast";
+import NoteHeader from "@/components/Notes/NoteHeader";
 import {
   fetchNote,
-  updateNoteContent,
+  updateNoteDescription,
   updateNoteTitle,
 } from "@/app/actions/noteActions";
 
 const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [isFetching, setIsFetching] = useState(true);
+  const [description, setDescription] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [noteNotFound, setNoteNotFound] = useState(false);
-  const contentRef = useRef<string>("");
-
-  const showToast = (
-    message: string,
-    variant: "default" | "destructive" = "default"
-  ) => {
-    toast({
-      description: message,
-      variant,
-    });
-  };
 
   useEffect(() => {
     const handleFetchNote = async () => {
@@ -38,18 +27,19 @@ const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
 
         if (result.success) {
           setTitle(result.note?.title as string);
-          const noteContent = result.note?.description ?? "";
-          setContent(noteContent);
-          contentRef.current = noteContent;
+          setDescription(result.note?.description ?? "");
         } else {
           setNoteNotFound(true);
-          showToast(
-            result.message ?? "An unexpected error occurred.",
-            "destructive"
-          );
+          toast({
+            description: result.message,
+            variant: "destructive",
+          });
         }
       } catch (error) {
-        showToast("An error occurred while fetching the note.", "destructive");
+        toast({
+          description: "An error occurred while fetching the note.",
+          variant: "destructive",
+        });
         setNoteNotFound(true);
       } finally {
         setIsFetching(false);
@@ -57,48 +47,57 @@ const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
     };
 
     handleFetchNote();
-  }, [id, showToast]);
+  }, [id]);
 
   const handleUpdateTitle = async (newTitle: string) => {
     setIsSaving(true);
     try {
       const result = await updateNoteTitle(id, newTitle);
 
-      showToast(result.message, result.success ? "default" : "destructive");
-
       if (result.success) {
         setTitle(newTitle);
+        toast({
+          description: result.message,
+          variant: "default",
+        });
+      } else {
+        toast({
+          description: result.message,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      showToast("Error updating title.", "destructive");
+      toast({
+        description: "Error updating title.",
+        variant: "destructive",
+      });
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleSaveContent = async () => {
-    const currentContent = contentRef.current;
-
-    if (currentContent.trim() === "" || currentContent === content) {
-      showToast(
-        currentContent.trim() === ""
-          ? "Content cannot be blank."
-          : "No changes made to the content.",
-        "destructive"
-      );
-      return;
-    }
-
+  const handleSaveDescription = async (newDescription: string) => {
     setIsSaving(true);
     try {
-      const result = await updateNoteContent(id, currentContent);
-      showToast(result.message, result.success ? "default" : "destructive");
+      const result = await updateNoteDescription(id, newDescription);
 
       if (result.success) {
-        setContent(currentContent);
+        setDescription(newDescription);
+        toast({
+          description: result.message,
+          variant: "default",
+        });
+      } else {
+        toast({
+          description: result.message,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      showToast("Error saving content.", "destructive");
+      toast({
+        description: "Error saving content.",
+        variant: "destructive",
+      });
     } finally {
       setIsSaving(false);
     }
@@ -120,16 +119,13 @@ const NoteDetail = ({ params: { id } }: { params: { id: string } }) => {
           <NoteHeader
             title={title}
             onUpdateTitle={handleUpdateTitle}
-            onSave={handleSaveContent}
+            onSave={() => handleSaveDescription(description)}
             isSaving={isSaving}
             noteId={id}
           />
-
           <Tiptap
-            description={content}
-            onChange={(newContent) => {
-              contentRef.current = newContent;
-            }}
+            description={description}
+            onChange={(newDescription) => setDescription(newDescription)}
           />
         </>
       )}

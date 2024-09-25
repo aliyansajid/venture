@@ -30,12 +30,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           await db.account.create({
             data: {
               userId: newUser.id,
+              type: account.type,
               provider: account.provider,
               providerAccountId: account.providerAccountId,
               access_token: account.access_token,
-              refresh_token: account.refresh_token,
               expires_at: account.expires_at,
-              type: account.type,
             },
           });
 

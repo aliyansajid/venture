@@ -20,20 +20,9 @@ declare module "next-auth" {
   }
 }
 
-export interface OTPFormProps {
-  email: string;
-  firstName: string;
-}
-
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  phone: string | null;
-  dateOfJoining: Date;
-  image: string | null;
+export interface FilterValue {
+  key: string;
+  value: string;
 }
 
 export interface Client {
@@ -42,6 +31,34 @@ export interface Client {
   lastName?: string;
   email?: string;
   image?: string | null;
+}
+
+export interface ModalDialogProps {
+  isOpen: boolean;
+  title: string;
+  description: string;
+  onClose: () => void;
+  children?: React.ReactNode;
+}
+
+export interface User {
+  id: string;
+  image: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfJoining: Date;
+  role: string;
+}
+
+export interface UserAction {
+  label: string;
+  icon: string;
+  route?: string;
+  action?: () => void;
+  modalTitle?: string;
+  modalDescription?: string;
+  component?: React.ComponentType;
 }
 
 interface Note {
@@ -99,34 +116,6 @@ export interface TeamMember {
   role: string;
 }
 
-export interface ModalDialogProps {
-  isOpen: boolean;
-  title: string;
-  description: string;
-  onClose: () => void;
-  children?: React.ReactNode;
-}
-
-export interface SectionHeaderProps {
-  title: string;
-  children?: React.ReactNode;
-}
-
-export interface UserAction {
-  label: string;
-  icon: string;
-  route?: string;
-  action?: () => void;
-  modalTitle?: string;
-  modalDescription?: string;
-  component?: React.ComponentType;
-}
-
-export interface FilterValue {
-  key: string;
-  value: string;
-}
-
 export interface Project {
   id: string;
   title: string;
@@ -153,20 +142,6 @@ export interface ProjectCardProps {
   completedTasks: number;
   client?: Client | null;
   teamMembers: Team["teamMembers"];
-}
-
-export interface ProjectDetailProps {
-  params: { id: string };
-}
-
-export interface ProjectFormProps {
-  projectId?: string;
-  project?: Project;
-}
-
-export interface AddTeamFormProps {
-  teamId?: string;
-  onSuccess?: () => void;
 }
 
 export interface DataTableColumnHeaderProps<TData, TValue>

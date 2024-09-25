@@ -2,15 +2,14 @@
 
 import { db } from "@/lib/prisma";
 import nodemailer from "nodemailer";
+import { getUserByEmail } from "./authActions";
 
 export const sendOTP = async (email: string, firstName: string) => {
   try {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
 
-    const user = await db.user.findUnique({
-      where: { email },
-    });
+    const user = await getUserByEmail(email);
 
     if (!user) {
       throw new Error("User not found");

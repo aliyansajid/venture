@@ -12,10 +12,10 @@ import { fetchNotes } from "@/app/actions/noteActions";
 import { Note } from "@/types/next-auth";
 
 const Notes = () => {
+  const { toast } = useToast();
   const { data: session } = useSession();
   const [notes, setNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
 
   useEffect(() => {
     const handleFetchNotes = async () => {

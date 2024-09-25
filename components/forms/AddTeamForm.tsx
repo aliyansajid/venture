@@ -13,11 +13,17 @@ import Image from "next/image";
 import { SelectItem } from "../ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "../ui/skeleton";
-import { AddTeamFormProps, TeamUser } from "@/types/next-auth";
+import { TeamUser } from "@/types/next-auth";
 import { createTeam, updateTeam, fetchTeam } from "@/app/actions/teamActions";
 import { fetchTeamLeadsAndMembers } from "@/app/actions/teamActions";
 
-const AddTeamForm = ({ teamId, onSuccess }: AddTeamFormProps) => {
+const AddTeamForm = ({
+  teamId,
+  onSuccess,
+}: {
+  teamId?: string;
+  onSuccess?: () => void;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(!!teamId);
   const [teamLeads, setTeamLeads] = useState<TeamUser[]>([]);

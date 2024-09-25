@@ -16,7 +16,7 @@ import {
   fetchClients,
 } from "@/app/actions/projectActions";
 import { useToast } from "../ui/use-toast";
-import { Client, ProjectFormProps } from "@/types/next-auth";
+import { Client, Project } from "@/types/next-auth";
 import { Skeleton } from "../ui/skeleton";
 
 interface Team {
@@ -24,7 +24,13 @@ interface Team {
   teamName: string;
 }
 
-const ProjectForm = ({ projectId, project }: ProjectFormProps) => {
+const ProjectForm = ({
+  projectId,
+  project,
+}: {
+  projectId?: string;
+  project?: Project;
+}) => {
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [teams, setTeams] = useState<Team[]>([]);
   const [clients, setClients] = useState<Client[]>([]);

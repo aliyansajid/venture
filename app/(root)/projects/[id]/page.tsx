@@ -1,7 +1,7 @@
 "use client";
 
 import TopHeader from "@/components/TopHeader";
-import { Project, ProjectDetailProps } from "@/types/next-auth";
+import { Project } from "@/types/next-auth";
 import React, { useEffect, useState } from "react";
 import ProjectHeader from "@/components/Projects/Header";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -10,7 +10,7 @@ import Loader from "@/components/Loader";
 import { fetchProject } from "@/app/actions/projectActions";
 import { useToast } from "@/components/ui/use-toast";
 
-const ProjectDetail = ({ params: { id } }: ProjectDetailProps) => {
+const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
   const { toast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
   const [projectNotFound, setProjectNotFound] = useState(false);

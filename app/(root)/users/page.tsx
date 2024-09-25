@@ -12,7 +12,7 @@ import { fetchUsers } from "@/app/actions/userActions";
 
 const Users = () => {
   const { toast } = useToast();
-  const [data, setData] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<FilterValue[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -24,7 +24,7 @@ const Users = () => {
       const result = await fetchUsers(page, limit);
 
       if (result?.users && result?.totalPages !== undefined) {
-        setData(result.users ?? []);
+        setUsers(result.users ?? []);
         setTotalPages(result.totalPages ?? 1);
 
         const roles: FilterValue[] = Array.from(
@@ -64,7 +64,7 @@ const Users = () => {
       ) : (
         <div className="px-4 py-8 md:p-8">
           <DataTable
-            data={data}
+            data={users}
             columns={columns}
             searchColumnKey="name"
             filterColumnKey="role"

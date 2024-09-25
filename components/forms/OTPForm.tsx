@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import CustomButton, { ButtonVariant } from "@/components/CustomButton";
 import {
   InputOTP,
@@ -8,11 +8,16 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { OTPFormProps } from "@/types/next-auth";
 import { verifyOTP } from "@/app/actions/authActions";
 import { sendOTP } from "@/app/actions/sendOTP";
 
-const OTPForm = ({ email, firstName }: OTPFormProps) => {
+const OTPForm = ({
+  email,
+  firstName,
+}: {
+  email: string;
+  firstName: string;
+}) => {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);

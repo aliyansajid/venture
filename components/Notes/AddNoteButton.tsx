@@ -2,22 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import CustomButton, { ButtonVariant } from "../CustomButton";
+import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { createNote } from "@/app/actions/noteActions";
-import { useSession } from "next-auth/react";
+import CustomButton, { ButtonVariant } from "../CustomButton";
 
 const AddNoteButton = () => {
-  const { toast } = useToast();
   const router = useRouter();
+  const { toast } = useToast();
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-  const isButtonDisabled = isLoading || !session?.user?.id;
 
   const handleCreateNote = async () => {
     if (!session?.user?.id) {
       toast({
-        description: "Please log in again to add a note.",
+        description: "Please log in again to create a note.",
         variant: "destructive",
       });
       return;
@@ -25,10 +24,13 @@ const AddNoteButton = () => {
 
     try {
       setIsLoading(true);
-
       const result = await createNote(session.user.id);
 
       if (result.success) {
+        toast({
+          description: result.message,
+          variant: "default",
+        });
         router.push(`/notes/${result.id}`);
       } else {
         toast({
@@ -49,10 +51,10 @@ const AddNoteButton = () => {
   return (
     <CustomButton
       variant={ButtonVariant.DEFAULT}
-      text={"Add Note"}
-      disabled={isButtonDisabled}
-      isLoading={isLoading}
+      text="Add Note"
       onClick={handleCreateNote}
+      isLoading={isLoading}
+      disabled={isLoading}
     />
   );
 };

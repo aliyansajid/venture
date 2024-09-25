@@ -12,15 +12,21 @@ export const authSchema = (type: string) => {
     firstName:
       type === "login"
         ? z.string().optional()
-        : z.string().min(3, "First Name must be at least 3 characters long"),
+        : z
+            .string({ required_error: "First name is required" })
+            .min(3, "First Name must be at least 3 characters long"),
     lastName:
       type === "login"
         ? z.string().optional()
-        : z.string().min(3, "Last Name must be at least 3 characters long"),
+        : z
+            .string({ required_error: "Last name is required" })
+            .min(3, "Last Name must be at least 3 characters long"),
     email: z.string().email("Please enter a valid email address"),
     password:
       type === "sign-up"
-        ? z.string().min(8, "Password must be at least 8 characters long")
+        ? z
+            .string({ required_error: "Password is required" })
+            .min(8, "Password must be at least 8 characters long")
         : z.string().optional(),
   });
 };

@@ -14,12 +14,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { fetchProfile, updateProfile } from "@/app/actions/profileActions";
 
 const ProfileSetting = () => {
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
-  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
+  const [isDataLoading, setIsDataLoading] = useState(true);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { toast } = useToast();
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
 
   const handleImageClick = () => {
     inputRef.current?.click();

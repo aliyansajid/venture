@@ -7,7 +7,7 @@ export async function createNote(authorId: string) {
     const note = await db.note.create({
       data: {
         title: "Untitled",
-        authorId: authorId,
+        authorId,
       },
     });
 
@@ -15,14 +15,12 @@ export async function createNote(authorId: string) {
       success: true,
       id: note.id,
       message: "Note created successfully.",
-      status: 201,
     };
   } catch (error: any) {
     console.error("Error creating note: ", error);
     return {
       success: false,
-      message: error.message || "An error occurred while creating the note",
-      status: 500,
+      message: "An error occurred while creating the note.",
     };
   }
 }
@@ -43,7 +41,11 @@ export async function fetchNote(id: string) {
       return { success: false, message: "Note not found.", status: 404 };
     }
 
-    return { success: true, note, status: 200 };
+    return {
+      success: true,
+      note,
+      status: 200,
+    };
   } catch (error: any) {
     console.error("Error fetching note: ", error);
     return {
@@ -110,7 +112,10 @@ export async function updateNoteTitle(id: string, newTitle: string) {
   }
 }
 
-export async function updateNoteContent(id: string, newDescription: string) {
+export async function updateNoteDescription(
+  id: string,
+  newDescription: string
+) {
   try {
     const updatedNote = await db.note.update({
       where: { id },
