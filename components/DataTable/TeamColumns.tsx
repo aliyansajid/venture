@@ -6,7 +6,6 @@ import { DataTableRowActions } from "./RowActions";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import { AnimatedTooltip } from "../ui/animated-tooltip";
-import { roleDisplayNames } from "@/lib/utils";
 import AddTeamForm from "../forms/AddTeamForm";
 
 export const teamColumns: ColumnDef<any>[] = [

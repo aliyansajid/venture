@@ -103,15 +103,7 @@ export interface TeamUser {
   lastName: string;
   email: string;
   image: string | null;
-}
-
-export interface TeamMember {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  image: string;
-  role: string;
+  role?: string;
 }
 
 export interface Project {

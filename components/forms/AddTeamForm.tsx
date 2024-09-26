@@ -15,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "../ui/skeleton";
 import { TeamUser } from "@/types/next-auth";
 import { createTeam, updateTeam, fetchTeam } from "@/app/actions/teamActions";
-import { fetchTeamLeadsAndMembers } from "@/app/actions/teamActions";
+import { fetchTeamData } from "@/app/actions/teamActions";
 
 const AddTeamForm = ({
   teamId,
@@ -38,9 +38,9 @@ const AddTeamForm = ({
   });
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const handleFetchTeamData = async () => {
       try {
-        const result = await fetchTeamLeadsAndMembers();
+        const result = await fetchTeamData();
         if (result.success) {
           setTeamLeads(result.teamLeads || []);
           setTeamMembers(result.teamMembers || []);
@@ -58,21 +58,21 @@ const AddTeamForm = ({
       }
     };
 
-    fetchUsers();
+    handleFetchTeamData();
 
     if (teamId) {
-      const fetchTeamData = async () => {
+      const handleFetchTeam = async () => {
         try {
           const teamData = await fetchTeam(teamId);
 
           if (teamData.success && teamData.team) {
             form.reset({
-              teamName: teamData.team.teamName || "",
-              teamLead: teamData.team.teamLead?.id || "",
+              teamName: teamData.team.teamName,
+              teamLead: teamData.team.teamLead?.id,
               teamMembers: teamData.team.teamMembers.map(
                 (member: any) => member.id
               ),
-              description: teamData.team.description || "",
+              description: teamData.team.description ?? "",
             });
           } else {
             toast({
@@ -90,7 +90,7 @@ const AddTeamForm = ({
         }
       };
 
-      fetchTeamData();
+      handleFetchTeam();
     }
   }, [teamId, form, toast]);
 

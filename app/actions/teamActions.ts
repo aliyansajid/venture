@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/prisma";
 
-export async function fetchTeamLeadsAndMembers() {
+export async function fetchTeamData() {
   try {
     const teamLeads = await db.user.findMany({
       where: { role: "Team Lead" },
