@@ -14,6 +14,7 @@ model Account {
   provider          String
   providerAccountId String
   access_token      String? @db.String
+  refresh_token     String?
   expires_at        Int?
 
   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
