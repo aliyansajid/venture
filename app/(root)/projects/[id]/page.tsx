@@ -12,7 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
   const { toast } = useToast();
-  const [project, setProject] = useState<Project | null>(null);
+  const [project, setProject] = useState<Project>();
   const [projectNotFound, setProjectNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>("Tasks");
@@ -22,7 +22,7 @@ const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
       const result = await fetchProject(id);
 
       if (result.success) {
-        setProject(result.project ?? null);
+        setProject(result.project);
       } else {
         setProjectNotFound(true);
         toast({

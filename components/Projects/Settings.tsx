@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchProject } from "@/app/actions/projectActions";
 import { fetchTeam } from "@/app/actions/teamActions";
-import { Project, TeamMember } from "@/types/next-auth";
+import { Project, TeamUser } from "@/types/next-auth";
 import { settingLinks } from "@/data";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -18,7 +18,7 @@ const Settings = ({
   project?: Project;
 }) => {
   const [activeSection, setActiveSection] = useState("general");
-  const [teamMembers, setTeamMembers] = useState<TeamMember[] | null>(null);
+  const [teamMembers, setTeamMembers] = useState<TeamUser[]>([]);
 
   const handleFetchProject = async () => {
     try {
@@ -33,9 +33,9 @@ const Settings = ({
               image: member.image,
               role: member.role,
             }));
-            setTeamMembers(members ?? null);
+            setTeamMembers(members);
           } else {
-            setTeamMembers(null);
+            setTeamMembers([]);
           }
         }
       }

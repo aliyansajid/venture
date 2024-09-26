@@ -27,8 +27,8 @@ export interface FilterValue {
 
 export interface Client {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   image?: string | null;
 }
 
@@ -118,7 +118,7 @@ export interface Project {
   teamId: string;
   clientId?: string | null;
   userId: string;
-  team: { id: string; teamName: string };
+  team: Team["id, teamMembers"];
   client?: Client | null;
   createdAt: Date;
   updatedAt: Date;

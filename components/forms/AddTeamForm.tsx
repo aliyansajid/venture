@@ -167,7 +167,7 @@ const AddTeamForm = ({
                   name="teamLead"
                   label="Select Team Lead"
                   placeholder="Select an Option"
-                  className="h-52"
+                  className="max-h-52"
                 >
                   {teamLeadOptions.map((lead) => (
                     <SelectItem key={lead.value} value={lead.value}>
