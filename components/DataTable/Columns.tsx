@@ -5,7 +5,6 @@ import { DataTableColumnHeader } from "./ColumnHeader";
 import { DataTableRowActions } from "./RowActions";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
-import { roleDisplayNames } from "@/lib/utils";
 import EditUser from "../forms/EditUser";
 export const columns: ColumnDef<any>[] = [
   {
@@ -113,7 +112,7 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => {
       const role = row.original.role;
-      return roleDisplayNames[role] || role;
+      return role;
     },
     filterFn: (row, id, value) => value.includes(row.getValue(id)),
   },

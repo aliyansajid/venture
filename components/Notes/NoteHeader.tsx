@@ -108,9 +108,8 @@ const NoteHeader = ({
     try {
       if (menuItem.action === "deleteNote") {
         setModalContent({
-          title: "Confirm Delete",
-          description:
-            "Are you sure you want to delete this note? This action cannot be undone.",
+          title: menuItem.modalTitle,
+          description: menuItem.modalDescription,
         });
         setModalChildren(
           <div className="flex flex-col space-y-2">

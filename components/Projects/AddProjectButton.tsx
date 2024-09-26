@@ -12,7 +12,7 @@ const AddProjectButton = () => {
     <>
       <CustomButton
         variant={ButtonVariant.DEFAULT}
-        text="Add Project"
+        text="New Project"
         onClick={() => setIsModalOpen(true)}
       />
 

@@ -31,25 +31,24 @@ const ProjectForm = ({
   projectId?: string;
   project?: Project;
 }) => {
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const router = useRouter();
+  const { toast } = useToast();
   const [teams, setTeams] = useState<Team[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const { toast } = useToast();
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   const formSchema = projectSchema;
-  const defaultValues = {
-    ...(project ? project : {}),
-    status: project?.status ?? undefined,
-    budget: project?.budget ?? undefined,
-    team: project?.teamId ?? "",
-    client: project?.clientId ?? "",
-  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      ...(project ? project : {}),
+      status: project?.status ?? undefined,
+      budget: project?.budget ?? undefined,
+      team: project?.teamId ?? "",
+      client: project?.clientId ?? "",
+    },
   });
 
   useEffect(() => {

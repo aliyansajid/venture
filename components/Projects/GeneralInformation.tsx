@@ -1,8 +1,14 @@
 import React from "react";
 import ProjectForm from "../forms/CreateProjectForm";
-import { ProjectFormProps } from "@/types/next-auth";
+import { Project } from "@/types/next-auth";
 
-const GeneralInformation = ({ projectId, project }: ProjectFormProps) => {
+const GeneralInformation = ({
+  projectId,
+  project,
+}: {
+  projectId?: string;
+  project?: Project;
+}) => {
   return (
     <div>
       <h2 className="text-xl font-medium mb-4">General Information</h2>

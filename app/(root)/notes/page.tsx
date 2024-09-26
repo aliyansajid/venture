@@ -34,7 +34,7 @@ const Notes = () => {
         setNotes(result.notes || []);
       } catch (error: any) {
         toast({
-          description: error.message,
+          description: "An unexpected error occurred while fetching the notes.",
           variant: "destructive",
         });
       } finally {

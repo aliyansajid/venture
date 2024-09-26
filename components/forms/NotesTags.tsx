@@ -18,16 +18,6 @@ const NoteTags = ({ noteId }: { noteId: string }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
-  const showToast = (
-    message: string,
-    variant: "default" | "destructive" = "default"
-  ) => {
-    toast({
-      description: message,
-      variant,
-    });
-  };
-
   const formSchema = z.object({
     tags: z.array(z.string().min(3).max(15)).max(3),
   });
@@ -83,27 +73,36 @@ const NoteTags = ({ noteId }: { noteId: string }) => {
     setTags((prevTags) => prevTags.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async () => {
+  async function onSubmit() {
     setIsSaving(true);
     form.setValue("tags", tags);
     try {
       const result = await updateNoteTags(noteId, tags);
 
       if (result.success) {
-        showToast(result.message, "default");
+        toast({
+          description: result.message,
+          variant: "default",
+        });
       } else {
-        showToast(result.message, "destructive");
+        toast({
+          description: result.message,
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      showToast("Error saving tags.", "destructive");
+      toast({
+        description: "Error saving tags.",
+        variant: "destructive",
+      });
     } finally {
       setIsSaving(false);
     }
-  };
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         {isLoading ? (
           <Skeleton className="w-full h-10 rounded-md" />
         ) : (
@@ -123,7 +122,7 @@ const NoteTags = ({ noteId }: { noteId: string }) => {
                   />
                 </div>
               ))}
-              {tags.length < 5 && (
+              {tags.length < 3 && (
                 <Controller
                   name="tags"
                   control={form.control}

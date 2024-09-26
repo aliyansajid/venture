@@ -27,13 +27,12 @@ export async function fetchTeams() {
 export async function fetchClients() {
   try {
     const clients = await db.user.findMany({
-      where: { role: "client" },
+      where: { role: "Client" },
       select: {
         id: true,
         firstName: true,
         lastName: true,
         image: true,
-        email: true,
       },
     });
 
@@ -71,7 +70,7 @@ export async function createProject(data: any) {
         teamId: team.id,
         userId: team.teamLeadId,
         priority: data.priority,
-        clientId: data.client,
+        clientId: data.client || null,
       },
     });
 
@@ -85,6 +84,47 @@ export async function createProject(data: any) {
     return {
       success: false,
       message: "Failed to create the project.",
+    };
+  }
+}
+
+export async function fetchProject(projectId: string) {
+  try {
+    const project = await db.project.findUnique({
+      where: { id: projectId },
+      include: {
+        team: {
+          select: {
+            id: true,
+            teamName: true,
+          },
+        },
+        client: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (!project) {
+      return {
+        success: false,
+        message: "Project not found.",
+      };
+    }
+
+    return {
+      success: true,
+      project,
+    };
+  } catch (error) {
+    console.error("Error fetching project: ", error);
+    return {
+      success: false,
+      message: "Failed to fetch project.",
     };
   }
 }
@@ -161,47 +201,6 @@ export async function fetchProjects(page: number = 1, limit: number = 10) {
     return {
       success: false,
       message: "Failed to fetch projects.",
-    };
-  }
-}
-
-export async function fetchProject(projectId: string) {
-  try {
-    const project = await db.project.findUnique({
-      where: { id: projectId },
-      include: {
-        team: {
-          select: {
-            id: true,
-            teamName: true,
-          },
-        },
-        client: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
-    });
-
-    if (!project) {
-      return {
-        success: false,
-        message: "Project not found.",
-      };
-    }
-
-    return {
-      success: true,
-      project,
-    };
-  } catch (error) {
-    console.error("Error fetching project: ", error);
-    return {
-      success: false,
-      message: "Failed to fetch project.",
     };
   }
 }

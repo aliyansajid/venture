@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchProject } from "@/app/actions/projectActions";
 import { fetchTeam } from "@/app/actions/teamActions";
-import { ProjectFormProps, TeamMember } from "@/types/next-auth";
+import { Project, TeamMember } from "@/types/next-auth";
 import { settingLinks } from "@/data";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -10,7 +10,13 @@ import GeneralInformation from "@/components/Projects/GeneralInformation";
 import Members from "@/components/Projects/Members";
 import { toast } from "../ui/use-toast";
 
-const Settings = ({ projectId, project }: ProjectFormProps) => {
+const Settings = ({
+  projectId,
+  project,
+}: {
+  projectId?: string;
+  project?: Project;
+}) => {
   const [activeSection, setActiveSection] = useState("general");
   const [teamMembers, setTeamMembers] = useState<TeamMember[] | null>(null);
 

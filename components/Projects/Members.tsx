@@ -2,6 +2,9 @@ import React from "react";
 import { TeamMember } from "@/types/next-auth";
 import Image from "next/image";
 
+// Provide a default fallback image URL
+const defaultImage = "/path/to/placeholder-image.png"; // Replace with your own placeholder image
+
 const Members = ({ members }: { members: TeamMember[] }) => {
   return (
     <div>
@@ -13,7 +16,7 @@ const Members = ({ members }: { members: TeamMember[] }) => {
             className="flex items-center gap-3 mb-3 pb-3 border-b border-border-primary last:border-b-0"
           >
             <Image
-              src={member.image}
+              src={member.image ? member.image : defaultImage} // Use fallback image if member.image is null
               alt={member.firstName}
               height={40}
               width={40}

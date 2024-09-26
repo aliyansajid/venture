@@ -23,37 +23,41 @@ const NoteCard = ({
   return (
     <Link href={`/notes/${id}`} passHref>
       <div className="cursor-pointer bg-background-primary border border-border-primary rounded-md space-y-3 px-6 py-4 max-w-md hover:shadow transition-shadow duration-200">
-        <div className="flex items-center gap-3">
-          {tags.map((tag, index) => {
-            const color = getTagColor(index);
-            return (
-              <span
-                key={index}
-                className={`text-xs font-medium px-1.5 py-1 rounded ${color.bg} ${color.text}`}
-              >
-                {tag}
-              </span>
-            );
-          })}
-        </div>
+        {tags.length > 0 && (
+          <div className="flex items-center gap-3">
+            {tags.map((tag, index) => {
+              const color = getTagColor(index);
+              return (
+                <span
+                  key={index}
+                  className={`text-xs font-medium px-1.5 py-1 rounded ${color.bg} ${color.text}`}
+                >
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
         <h3 className="text-lg font-medium text-dark-primary">{title}</h3>
-        <div
-          className="text-sm text-dark-secondary font-normal overflow-hidden"
-          style={{
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 4,
-          }}
-          dangerouslySetInnerHTML={{
-            __html: styledDescription,
-          }}
-        />
+        {description?.trim() && styledDescription.trim() !== "<p></p>" && (
+          <div
+            className="text-sm text-dark-secondary font-normal overflow-hidden"
+            style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 4,
+            }}
+            dangerouslySetInnerHTML={{
+              __html: styledDescription,
+            }}
+          />
+        )}
         <div className="flex items-center justify-between border-t border-border-primary pt-3">
           <div className="flex items-center gap-3">
             {isImageLoading && <Skeleton className="w-6 h-6 rounded-full" />}
             <Image
-              src={authorImage || "Unknown Author"}
-              alt={authorName || "/icons/UserCircle.svg"}
+              src={authorImage || "/icons/UserCircle.svg"}
+              alt={authorName as string}
               className={`w-6 h-6 rounded-full ${
                 isImageLoading ? "hidden" : "block"
               }`}
