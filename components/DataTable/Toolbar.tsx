@@ -53,7 +53,7 @@ export function DataTableToolbar<TData extends { id: string }>({
 
       if (!result?.success) {
         toast({
-          description: result?.message || "Failed to delete the items.",
+          description: result?.message,
           variant: "destructive",
         });
       } else {

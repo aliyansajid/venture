@@ -14,8 +14,6 @@ export async function fetchUser(userId: string) {
         email: true,
         role: true,
         phone: true,
-        image: true,
-        createdAt: true,
       },
     });
 
@@ -51,10 +49,10 @@ export async function fetchUsers(page: number, limit: number) {
       take: limit,
       select: {
         id: true,
-        image: true,
         firstName: true,
         lastName: true,
         email: true,
+        image: true,
         role: true,
         createdAt: true,
       },

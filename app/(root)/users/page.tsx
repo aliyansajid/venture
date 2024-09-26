@@ -24,7 +24,7 @@ const Users = () => {
       const result = await fetchUsers(page, limit);
 
       if (result?.users && result?.totalPages !== undefined) {
-        setUsers(result.users ?? []);
+        setUsers(result.users);
         setTotalPages(result.totalPages ?? 1);
 
         const roles: FilterValue[] = Array.from(
@@ -37,7 +37,7 @@ const Users = () => {
         setRoles(roles);
       } else {
         toast({
-          description: "An unexpected error occurred while fetching the users",
+          description: result.message,
           variant: "destructive",
         });
       }

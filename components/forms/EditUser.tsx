@@ -20,9 +20,9 @@ const EditUser = ({
   userId?: string;
   onSuccess?: () => void;
 }) => {
-  const [isDataLoading, setIsDataLoading] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   const form = useForm<z.infer<typeof userEditSchema>>({
     resolver: zodResolver(userEditSchema),
