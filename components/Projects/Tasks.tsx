@@ -1,19 +1,17 @@
-"use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomButton, { ButtonVariant } from "../CustomButton";
-import ModalDialog from "@/components/ModalDialog";
-import CreateProjectForm from "../forms/CreateProject";
+import TaskForm from "../forms/TaskForm";
+import ModalDialog from "../ModalDialog";
 
-const AddProjectButton = () => {
+const Tasks = ({ projectId }: { projectId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <>
+    <div className="p-8">
       <CustomButton
-        variant={ButtonVariant.DEFAULT}
-        text="New Project"
+        variant={ButtonVariant.GHOST}
+        text="Create new task"
         onClick={() => setIsModalOpen(true)}
+        className="p-0 hover:bg-white hover:underline"
       />
 
       {isModalOpen && (
@@ -23,11 +21,11 @@ const AddProjectButton = () => {
           description="Fill in the details to start your project."
           onClose={() => setIsModalOpen(false)}
         >
-          <CreateProjectForm />
+          <TaskForm projectId={projectId} />
         </ModalDialog>
       )}
-    </>
+    </div>
   );
 };
 
-export default AddProjectButton;
+export default Tasks;

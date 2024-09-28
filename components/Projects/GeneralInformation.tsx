@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectForm from "../forms/CreateProjectForm";
+import ProjectForm from "../forms/CreateProject";
 import { Project } from "@/types/next-auth";
 
 const GeneralInformation = ({

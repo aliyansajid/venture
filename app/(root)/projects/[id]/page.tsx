@@ -9,6 +9,7 @@ import Settings from "@/components/Projects/Settings";
 import Loader from "@/components/Loader";
 import { fetchProject } from "@/app/actions/projectActions";
 import { useToast } from "@/components/ui/use-toast";
+import Tasks from "@/components/Projects/Tasks";
 
 const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
   const { toast } = useToast();
@@ -57,7 +58,7 @@ const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
             />
 
             <TabsContent value="Tasks">
-              <div>Task content goes here</div>
+              {project && <Tasks projectId={id} project={project} />}
             </TabsContent>
             <TabsContent value="Timeline">
               <div>Timeline content goes here</div>

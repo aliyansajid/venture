@@ -8,11 +8,11 @@ import Image from "next/image";
 import Link from "next/link";
 import GeneralInformation from "@/components/Projects/GeneralInformation";
 import Members from "@/components/Projects/Members";
-import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import ModalDialog from "@/components/ModalDialog";
 import CustomButton, { ButtonVariant } from "../CustomButton";
 import Tags from "@/components/Projects/Tags";
+import { useToast } from "../ui/use-toast";
 
 const Settings = ({
   projectId,
@@ -21,6 +21,7 @@ const Settings = ({
   projectId?: string;
   project?: Project;
 }) => {
+  const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,7 +97,7 @@ const Settings = ({
 
   return (
     <div className="flex">
-      <nav className="border-r border-border-primary py-8 min-h-screen">
+      <nav className="w-60 border-r border-border-primary py-8 min-h-screen">
         {settingLinks.map((item) => {
           const isActive = activeSection === item.section;
           const isDelete = item.action === "deleteProject";

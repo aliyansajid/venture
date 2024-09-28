@@ -70,7 +70,7 @@ const ProjectCard = ({
           </p>
         </div>
 
-        <div className="flex justify-between items-center border-t border-border-primary pt-4">
+        <div className="flex justify-between items-center border-t border-border-primary pt-3">
           <AnimatedTooltip items={tooltipItems} size={26} />
           {remainingMembers > 0 && (
             <div className="relative flex items-center justify-center w-[24px] h-[24px] rounded-full bg-action-secondary-selected text-sm border-2 border-white">

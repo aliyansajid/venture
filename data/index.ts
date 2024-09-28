@@ -92,7 +92,7 @@ export const noteActions = [
 
 export const settingLinks = [
   {
-    label: "General Information",
+    label: "General",
     section: "general",
     icon: "/icons/Info.svg",
   },

@@ -70,6 +70,15 @@ export const projectSchema = z.object({
   client: z.string().optional(),
 });
 
+export const taskSchema = z.object({
+  title: z.string({ required_error: "Title is required" }),
+  dueDate: z.date({ required_error: "Due date is required" }),
+  assignedTo: z.string({ required_error: "Assignee is required" }),
+  priority: z.string({ required_error: "Priority is required" }),
+  status: z.string().optional(),
+  description: z.string().optional(),
+});
+
 export const getInitials = (name: string) => {
   if (!name) return "US";
   const nameArray = name.split(" ");
