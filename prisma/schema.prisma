@@ -99,18 +99,31 @@ model Project {
 }
 
 model Task {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  dueDate     DateTime
-  priority    String       @default("Normal")
-  status      String       @default("Not Started")
-  projectId   String       @db.ObjectId
-  assignedTo  String       @db.ObjectId
-  project     Project      @relation("ProjectTasks", fields: [projectId], references: [id], onDelete: Cascade)
-  assignee    User         @relation("UserTasks", fields: [assignedTo], references: [id], onDelete: Cascade)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id               String       @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  description      String?
+  dueDate          DateTime
+  priority         String       @default("Normal")
+  status           String       @default("Not Started")
+  projectId        String       @db.ObjectId
+  assignedTo       String       @db.ObjectId
+  totalSubTasks    Int          @default(0)
+  completedSubTasks Int         @default(0)
+  project          Project      @relation("ProjectTasks", fields: [projectId], references: [id], onDelete: Cascade)
+  assignee         User         @relation("UserTasks", fields: [assignedTo], references: [id], onDelete: Cascade)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  subtasks         Subtask[]    
 
   @@map("Tasks")
+}
+
+model Subtask {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  completed Boolean @default(false)
+  taskId    String @db.ObjectId
+  task      Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("Subtasks")
 }

@@ -16,7 +16,7 @@ const buttonVariants = cva(
         outline:
           "border border-action-outline-base2 bg-action-secondary-base hover:bg-action-secondary-hover hover:text-dark-primary gap-2 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         secondary:
-          "bg-action-secondary-base2 text-dark-primary hover:bg-action-secondary-hover dark:bg-slate-800 gap-2 dark:text-slate-50 dark:hover:bg-slate-800/80",
+          "bg-action-secondary-base2 text-dark-primary hover:bg-action-secondary-hover gap-2 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
         ghost:
           "hover:bg-action-secondary-hover hover:text-dark-primary gap-2 dark:hover:bg-slate-800 dark:hover:text-slate-50 focus-visible:ring-0 focus-visible:ring-offset-0",
         link: "text-action-primary-base underline-offset-4 hover:underline hover:action-primary-hover gap-2 dark:text-slate-50",

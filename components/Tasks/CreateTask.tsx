@@ -6,12 +6,14 @@ import ModalDialog from "../ModalDialog";
 const CreateTaskModal = ({ projectId }: { projectId: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
-    <div className="p-8">
+    <>
       <CustomButton
-        variant={ButtonVariant.GHOST}
+        variant={ButtonVariant.LINK}
         text="Create new task"
+        iconSrc="/icons/PlusCircle.svg"
+        iconAlt="Plus Circle"
         onClick={() => setIsModalOpen(true)}
-        className="p-0 hover:bg-white hover:underline"
+        className="h-auto p-0"
       />
 
       {isModalOpen && (
@@ -24,7 +26,7 @@ const CreateTaskModal = ({ projectId }: { projectId: string }) => {
           <TaskForm projectId={projectId} />
         </ModalDialog>
       )}
-    </div>
+    </>
   );
 };
 

@@ -86,7 +86,8 @@ export const noteActions = [
     icon: "/icons/Trash.svg",
     action: "deleteNote",
     modalTitle: "Confirm Delete",
-    modalDescription: "Are you sure you want to permanently delete this note?",
+    modalDescription:
+      "Are you sure you want to delete this note? This action cannot be undone.",
   },
 ];
 
@@ -110,5 +111,23 @@ export const settingLinks = [
     label: "Delete",
     action: "deleteProject",
     icon: "/icons/Trash.svg",
+  },
+];
+
+export const taskActions = [
+  {
+    label: "Edit",
+    icon: "/icons/PencilSimple.svg",
+    modalTitle: "Edit Task",
+    modalDescription: "Organize your note by adding relevant tags.",
+    component: NoteTags,
+  },
+  {
+    label: "Delete",
+    icon: "/icons/Trash.svg",
+    action: "deleteTask",
+    modalTitle: "Confirm Delete",
+    modalDescription:
+      "Are you sure you want to delete this task? This action cannot be undone.",
   },
 ];

@@ -1,8 +1,8 @@
 "use client";
 
 import TopHeader from "@/components/TopHeader";
-import { Project } from "@/types/next-auth";
-import React, { useEffect, useState } from "react";
+import { Project, Task } from "@/types/next-auth";
+import { useEffect, useState } from "react";
 import ProjectHeader from "@/components/Projects/Header";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import Settings from "@/components/Projects/Settings";
@@ -14,6 +14,7 @@ import Tasks from "@/components/Projects/Tasks";
 const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
   const { toast } = useToast();
   const [project, setProject] = useState<Project>();
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [projectNotFound, setProjectNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>("Tasks");
@@ -22,8 +23,9 @@ const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
     const handleFetchProject = async () => {
       const result = await fetchProject(id);
 
-      if (result.success) {
+      if (result.success && result.project) {
         setProject(result.project);
+        setTasks(result.project.tasks);
       } else {
         setProjectNotFound(true);
         toast({
@@ -58,7 +60,7 @@ const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
             />
 
             <TabsContent value="Tasks">
-              {project && <Tasks projectId={id} project={project} />}
+              {project && <Tasks projectId={id} tasks={tasks} />}
             </TabsContent>
             <TabsContent value="Timeline">
               <div>Timeline content goes here</div>

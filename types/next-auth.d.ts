@@ -136,6 +136,30 @@ export interface ProjectCardProps {
   teamMembers: Team["teamMembers"];
 }
 
+export interface Task {
+  id: string;
+  title: string;
+  description?: string | null;
+  dueDate: Date;
+  priority: string;
+  status?: string | null;
+  assignee: {
+    firstName: string;
+    lastName: string;
+    image?: string | null;
+  };
+  subtasks: Subtask[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Subtask {
+  id: string;
+  title: string;
+  completed: boolean;
+  taskId: string;
+}
+
 export interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;

@@ -24,7 +24,7 @@ const ProjectCard = ({
     id: index,
     name: `${member.firstName} ${member.lastName}`,
     designation: member.role ?? "Unknown Role",
-    image: member.image ?? "/default-avatar.png",
+    image: member.image ?? "/icons/UserCircle.svg",
   }));
 
   return (

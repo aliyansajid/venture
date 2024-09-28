@@ -106,6 +106,26 @@ export async function fetchProject(projectId: string) {
             lastName: true,
           },
         },
+        tasks: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            dueDate: true,
+            priority: true,
+            status: true,
+            subtasks: true,
+            assignee: {
+              select: {
+                firstName: true,
+                lastName: true,
+                image: true,
+              },
+            },
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
       },
     });
 

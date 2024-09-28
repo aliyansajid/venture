@@ -66,7 +66,7 @@ export function DataTablePagination<TData>({
             <ChevronsLeft size={16} />
           </Button>
           <Button
-            variant="outline"
+            variant="secondary"
             className="h-8 w-8 p-0"
             onClick={() => setPage(currentPage - 1)}
             disabled={currentPage === 1}
@@ -75,7 +75,7 @@ export function DataTablePagination<TData>({
             <ChevronLeft size={16} />
           </Button>
           <Button
-            variant="outline"
+            variant="secondary"
             className="h-8 w-8 p-0"
             onClick={() => setPage(currentPage + 1)}
             disabled={currentPage === totalPages}
