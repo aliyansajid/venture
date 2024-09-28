@@ -13,7 +13,7 @@ import Image from "next/image";
 import { SelectItem } from "../ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "../ui/skeleton";
-import { TeamUser } from "@/types/next-auth";
+import { TeamMember } from "@/types/next-auth";
 import { createTeam, updateTeam, fetchTeam } from "@/app/actions/teamActions";
 import { fetchTeamData } from "@/app/actions/teamActions";
 
@@ -26,8 +26,8 @@ const AddTeamForm = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(!!teamId);
-  const [teamLeads, setTeamLeads] = useState<TeamUser[]>([]);
-  const [teamMembers, setTeamMembers] = useState<TeamUser[]>([]);
+  const [teamLeads, setTeamLeads] = useState<TeamMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   const { toast } = useToast();
 
