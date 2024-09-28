@@ -1,6 +1,7 @@
 import ProfileSetting from "@/components/forms/ProfileSetting";
 import { signOut } from "next-auth/react";
 import NoteTags from "@/components/forms/NotesTags";
+import TaskForm from "@/components/forms/TaskForm";
 
 export const sidebarLinks = [
   {
@@ -119,8 +120,8 @@ export const taskActions = [
     label: "Edit",
     icon: "/icons/PencilSimple.svg",
     modalTitle: "Edit Task",
-    modalDescription: "Organize your note by adding relevant tags.",
-    component: NoteTags,
+    modalDescription: "Modify the task details below.",
+    component: TaskForm,
   },
   {
     label: "Delete",

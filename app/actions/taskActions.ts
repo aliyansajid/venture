@@ -60,6 +60,46 @@ export async function createTask(values: any, projectId: string) {
   }
 }
 
+export async function fetchTask(taskId: string) {
+  try {
+    const task = await db.task.findUnique({
+      where: { id: taskId },
+    });
+    return task;
+  } catch (error) {
+    console.error("Failed to fetch task", error);
+    return null;
+  }
+}
+
+export async function updateTask(taskId: string, values: any) {
+  try {
+    const updatedTask = await db.task.update({
+      where: { id: taskId },
+      data: {
+        title: values.title,
+        description: values.description,
+        dueDate: new Date(values.dueDate),
+        priority: values.priority,
+        status: values.status,
+        assignedTo: values.assignedTo,
+      },
+    });
+
+    return {
+      success: true,
+      message: `Task '${updatedTask.title}' updated successfully.`,
+      task: updatedTask,
+    };
+  } catch (error) {
+    console.error("Failed to update task", error);
+    return {
+      success: false,
+      message: "Failed to update the task.",
+    };
+  }
+}
+
 export async function createSubtask(taskId: string, title: string) {
   try {
     const newSubtask = await db.subtask.create({

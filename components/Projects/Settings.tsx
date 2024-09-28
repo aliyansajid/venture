@@ -27,6 +27,7 @@ const Settings = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("general");
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamLead, setTeamLead] = useState<any>([]);
 
   const handleFetchProject = async () => {
     try {
@@ -36,11 +37,14 @@ const Settings = ({
         if (result.success) {
           const team = await fetchTeam(result.project?.teamId as string);
           if (team.success && team.team) {
+            const teamLead = team.team.teamLead;
             const members = team.team.teamMembers.map((member: any) => ({
               ...member,
               image: member.image,
               role: member.role,
             }));
+
+            setTeamLead(teamLead);
             setTeamMembers(members);
           } else {
             setTeamMembers([]);
@@ -143,7 +147,7 @@ const Settings = ({
           <GeneralInformation projectId={projectId} project={project} />
         )}
         {activeSection === "members" && teamMembers && (
-          <Members members={teamMembers} />
+          <Members members={teamMembers} teamLead={teamLead} />
         )}
         {activeSection === "tags" && projectId && (
           <Tags projectId={projectId} />

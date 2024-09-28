@@ -125,6 +125,7 @@ const Tasks = ({
       {selectedTask && (
         <div className="w-1/2 border-l border-border-primary">
           <TaskDetail
+            projectId={projectId}
             task={selectedTask}
             updateChecklist={(updatedChecklist, taskCompleted) =>
               updateChecklist(selectedTask.id, updatedChecklist, taskCompleted)

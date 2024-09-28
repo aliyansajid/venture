@@ -117,6 +117,7 @@ export async function fetchProject(projectId: string) {
             subtasks: true,
             assignee: {
               select: {
+                id: true,
                 firstName: true,
                 lastName: true,
                 image: true,

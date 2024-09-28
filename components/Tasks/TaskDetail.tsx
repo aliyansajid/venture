@@ -25,9 +25,11 @@ import { useRouter } from "next/navigation";
 import ModalDialog from "../ModalDialog";
 
 const TaskDetail = ({
+  projectId,
   task,
   updateChecklist,
 }: {
+  projectId: string;
   task: Task;
   updateChecklist: (checklist: Subtask[], taskCompleted: boolean) => void;
 }) => {
@@ -146,7 +148,10 @@ const TaskDetail = ({
           description: menuItem.modalDescription,
         });
         setModalChildren(
-          React.createElement(menuItem.component, { taskId: task.id })
+          React.createElement(menuItem.component, {
+            projectId: projectId,
+            task: task,
+          })
         );
         setIsModalOpen(true);
       }

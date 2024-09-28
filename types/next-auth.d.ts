@@ -144,6 +144,7 @@ export interface Task {
   priority: string;
   status?: string | null;
   assignee: {
+    id: string;
     firstName: string;
     lastName: string;
     image?: string | null;
