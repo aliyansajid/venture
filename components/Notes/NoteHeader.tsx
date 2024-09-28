@@ -15,6 +15,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 const NoteHeader = ({
   title,
@@ -112,7 +113,7 @@ const NoteHeader = ({
           description: menuItem.modalDescription,
         });
         setModalChildren(
-          <div className="flex justify-end space-x-4">
+          <div className="flex justify-end gap-2">
             <CustomButton
               variant={ButtonVariant.DEFAULT}
               text="Cancel"
@@ -234,8 +235,13 @@ const NoteHeader = ({
               <DropdownMenuItem
                 key={item.label}
                 onClick={() => handleMenuItem(item)}
+                className={
+                  item.action === "deleteNote"
+                    ? "text-red-base focus:text-red-base"
+                    : ""
+                }
               >
-                <item.icon size={16} />
+                <Image src={item.icon} alt="Icon" width={20} height={20} />
                 {item.label}
               </DropdownMenuItem>
             ))}

@@ -97,7 +97,7 @@ export interface Team {
   createdAt: Date;
 }
 
-export interface TeamUser {
+export interface TeamMember {
   id: string;
   firstName: string;
   lastName: string;
@@ -109,6 +109,7 @@ export interface TeamUser {
 export interface Project {
   id: string;
   title: string;
+  tags: string[];
   dueDate: Date;
   priority: string;
   status?: string | null;
@@ -127,6 +128,7 @@ export interface Project {
 export interface ProjectCardProps {
   id: string;
   title: string;
+  tags: string[];
   dueDate: Date;
   totalTasks: number;
   completedTasks: number;

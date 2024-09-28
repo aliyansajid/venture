@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Ellipsis, Pencil, Trash2 } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,7 @@ import CustomButton, { ButtonVariant } from "../CustomButton";
 import { DataTableRowActionsProps } from "@/types/next-auth";
 import { deleteUser } from "@/app/actions/userActions";
 import { deleteTeam } from "@/app/actions/teamActions";
+import Image from "next/image";
 
 export function DataTableRowActions<TData extends { id: string }>({
   row,
@@ -77,10 +78,20 @@ export function DataTableRowActions<TData extends { id: string }>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => setShowEditModal(true)}>
-            <Pencil size={16} /> Edit
+            <Image
+              src="/icons/PencilSimple.svg"
+              alt="Pencil"
+              width={20}
+              height={20}
+            />
+            Edit
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setShowDeleteModal(true)}>
-            <Trash2 size={16} /> Delete
+          <DropdownMenuItem
+            onClick={() => setShowDeleteModal(true)}
+            className="text-red-base focus:text-red-base"
+          >
+            <Image src="/icons/Trash.svg" alt="Trash" width={20} height={20} />
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -92,19 +103,20 @@ export function DataTableRowActions<TData extends { id: string }>({
           description={`Are you sure you want to delete this ${entityName}? This action cannot be undone.`}
           onClose={() => setShowDeleteModal(false)}
         >
-          <div className="flex flex-col space-y-2">
+          <div className="flex justify-end gap-2">
             <CustomButton
               variant={ButtonVariant.DEFAULT}
               text="Cancel"
               onClick={() => setShowDeleteModal(false)}
-              className="w-full"
             />
             <CustomButton
               variant={ButtonVariant.DESTRUCTIVE}
               text="Delete"
-              onClick={handleDelete}
-              className="w-full"
+              onClick={async () => {
+                await handleDelete();
+              }}
               isLoading={isLoading}
+              disabled={isLoading}
             />
           </div>
         </ModalDialog>

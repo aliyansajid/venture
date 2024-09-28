@@ -1,4 +1,3 @@
-import React from "react";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { CheckSquare, Calendar, Clock, Settings } from "lucide-react";
 
@@ -17,7 +16,7 @@ const ProjectHeader = ({ title, activeTab, setActiveTab }: Props) => {
         onValueChange={setActiveTab}
         className="flex flex-1 items-center"
       >
-        <TabsList className="flex space-x-4">
+        <TabsList className="flex gap-4">
           <TabButton
             name="Tasks"
             icon={<CheckSquare size={20} />}

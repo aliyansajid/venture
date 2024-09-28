@@ -1,8 +1,8 @@
 import React from "react";
-import { TeamUser } from "@/types/next-auth";
+import { TeamMember } from "@/types/next-auth";
 import Image from "next/image";
 
-const Members = ({ members }: { members: TeamUser[] }) => {
+const Members = ({ members }: { members: TeamMember[] }) => {
   return (
     <div>
       <h2 className="text-xl font-medium">Members</h2>

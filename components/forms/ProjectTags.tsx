@@ -123,7 +123,7 @@ const ProjectTags = ({ projectId }: { projectId: string }) => {
           <Skeleton className="w-full h-10 rounded-md" />
         ) : (
           <>
-            <div className="border border-interaction-outline-base p-1 min-h-10 h-auto rounded-md flex items-center flex-wrap gap-2">
+            <div className="border border-interaction-outline-base px-3 py-1 h-auto rounded-md flex items-center flex-wrap gap-2 hover:border-interaction-outline-hover">
               {tags.map((tag, index) => (
                 <div key={index} className={tagVariants({ animate: true })}>
                   <span>{tag}</span>

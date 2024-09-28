@@ -65,6 +65,7 @@ const Projects = () => {
               key={project.id}
               id={project.id}
               title={project.title}
+              tags={project.tags}
               dueDate={project.dueDate}
               totalTasks={project.totalTasks}
               completedTasks={project.completedTasks}

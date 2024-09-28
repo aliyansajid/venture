@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchProject, deleteProject } from "@/app/actions/projectActions";
 import { fetchTeam } from "@/app/actions/teamActions";
-import { Project, TeamUser } from "@/types/next-auth";
+import { Project, TeamMember } from "@/types/next-auth";
 import { settingLinks } from "@/data";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -25,7 +25,7 @@ const Settings = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("general");
-  const [teamMembers, setTeamMembers] = useState<TeamUser[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   const handleFetchProject = async () => {
     try {
@@ -94,13 +94,12 @@ const Settings = ({
     }
   };
 
-  if (!project) return <div>Loading...</div>;
-
   return (
     <div className="flex">
       <nav className="border-r border-border-primary py-8 min-h-screen">
         {settingLinks.map((item) => {
           const isActive = activeSection === item.section;
+          const isDelete = item.action === "deleteProject";
           return (
             <Link
               href={""}
@@ -109,6 +108,7 @@ const Settings = ({
                 "flex items-center mx-4 p-2 gap-3 mb-1 rounded-md",
                 {
                   "bg-action-secondary-selected": isActive,
+                  "text-red-base": isDelete,
                 }
               )}
               onClick={() => handleMenuItem(item)}
@@ -119,13 +119,15 @@ const Settings = ({
                 width={20}
                 height={20}
                 className={cn({
-                  "brightness-[0] invert-0": isActive,
+                  "brightness-[0] invert-0": isActive && !isDelete,
+                  "text-red-base": isDelete,
                 })}
               />
               <p
                 className={cn("text-sm font-medium", {
-                  "text-dark-primary": isActive,
-                  "text-dark-secondary": !isActive,
+                  "text-dark-primary": isActive && !isDelete,
+                  "text-dark-secondary": !isActive && !isDelete,
+                  "text-red-base": isDelete,
                 })}
               >
                 {item.label}
@@ -149,11 +151,11 @@ const Settings = ({
         {isModalOpen && (
           <ModalDialog
             isOpen={isModalOpen}
-            title="Delete Project"
+            title="Confirm Delete"
             description="Are you sure you want to delete this project? This action cannot be undone."
             onClose={() => setIsModalOpen(false)}
           >
-            <div className="flex justify-end space-x-4">
+            <div className="flex justify-end gap-2">
               <CustomButton
                 variant={ButtonVariant.DEFAULT}
                 text="Cancel"

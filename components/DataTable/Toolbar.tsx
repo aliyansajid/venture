@@ -129,19 +129,20 @@ export function DataTableToolbar<TData extends { id: string }>({
                 description={`Are you sure you want to delete the selected ${entity}? This action cannot be undone.`}
                 onClose={() => setShowDeleteModal(false)}
               >
-                <div className="flex flex-col space-y-2">
+                <div className="flex justify-end gap-2">
                   <CustomButton
                     variant={ButtonVariant.DEFAULT}
                     text="Cancel"
                     onClick={() => setShowDeleteModal(false)}
-                    className="w-full"
                   />
                   <CustomButton
                     variant={ButtonVariant.DESTRUCTIVE}
                     text="Delete"
-                    onClick={handleDelete}
-                    className="w-full"
+                    onClick={async () => {
+                      await handleDelete();
+                    }}
                     isLoading={isLoading}
+                    disabled={isLoading}
                   />
                 </div>
               </ModalDialog>
