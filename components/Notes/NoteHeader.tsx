@@ -112,12 +112,11 @@ const NoteHeader = ({
           description: menuItem.modalDescription,
         });
         setModalChildren(
-          <div className="flex flex-col space-y-2">
+          <div className="flex justify-end space-x-4">
             <CustomButton
               variant={ButtonVariant.DEFAULT}
               text="Cancel"
               onClick={() => setIsModalOpen(false)}
-              className="w-full"
             />
             <CustomButton
               variant={ButtonVariant.DESTRUCTIVE}
@@ -127,7 +126,6 @@ const NoteHeader = ({
               }}
               isLoading={isLoading}
               disabled={isLoading}
-              className="w-full"
             />
           </div>
         );

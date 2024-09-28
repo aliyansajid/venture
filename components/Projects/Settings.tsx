@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchProject } from "@/app/actions/projectActions";
+import { fetchProject, deleteProject } from "@/app/actions/projectActions";
 import { fetchTeam } from "@/app/actions/teamActions";
 import { Project, TeamUser } from "@/types/next-auth";
 import { settingLinks } from "@/data";
@@ -9,6 +9,10 @@ import Link from "next/link";
 import GeneralInformation from "@/components/Projects/GeneralInformation";
 import Members from "@/components/Projects/Members";
 import { toast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
+import ModalDialog from "@/components/ModalDialog";
+import CustomButton, { ButtonVariant } from "../CustomButton";
+import Tags from "@/components/Projects/Tags";
 
 const Settings = ({
   projectId,
@@ -17,6 +21,9 @@ const Settings = ({
   projectId?: string;
   project?: Project;
 }) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("general");
   const [teamMembers, setTeamMembers] = useState<TeamUser[]>([]);
 
@@ -51,6 +58,42 @@ const Settings = ({
     handleFetchProject();
   }, [projectId]);
 
+  const handleDeleteProject = async () => {
+    setIsLoading(true);
+    try {
+      const result = await deleteProject(projectId as string);
+
+      if (result.success) {
+        toast({
+          description: result.message,
+          variant: "default",
+        });
+        setIsModalOpen(false);
+        router.push("/projects");
+      } else {
+        toast({
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        description: "Error deleting the project.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleMenuItem = (item: any) => {
+    if (item.action === "deleteProject") {
+      setIsModalOpen(true);
+    } else {
+      setActiveSection(item.section);
+    }
+  };
+
   if (!project) return <div>Loading...</div>;
 
   return (
@@ -68,7 +111,7 @@ const Settings = ({
                   "bg-action-secondary-selected": isActive,
                 }
               )}
-              onClick={() => setActiveSection(item.section)}
+              onClick={() => handleMenuItem(item)}
             >
               <Image
                 src={item.icon}
@@ -98,6 +141,35 @@ const Settings = ({
         )}
         {activeSection === "members" && teamMembers && (
           <Members members={teamMembers} />
+        )}
+        {activeSection === "tags" && projectId && (
+          <Tags projectId={projectId} />
+        )}
+
+        {isModalOpen && (
+          <ModalDialog
+            isOpen={isModalOpen}
+            title="Delete Project"
+            description="Are you sure you want to delete this project? This action cannot be undone."
+            onClose={() => setIsModalOpen(false)}
+          >
+            <div className="flex justify-end space-x-4">
+              <CustomButton
+                variant={ButtonVariant.DEFAULT}
+                text="Cancel"
+                onClick={() => setIsModalOpen(false)}
+              />
+              <CustomButton
+                variant={ButtonVariant.DESTRUCTIVE}
+                text="Delete"
+                onClick={async () => {
+                  await handleDeleteProject();
+                }}
+                isLoading={isLoading}
+                disabled={isLoading}
+              />
+            </div>
+          </ModalDialog>
         )}
       </div>
     </div>

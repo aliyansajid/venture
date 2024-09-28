@@ -75,6 +75,7 @@ model Team {
 model Project {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
   title           String
+  tags            String[]
   dueDate         DateTime
   budget          Int?
   priority        String       

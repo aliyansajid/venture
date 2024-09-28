@@ -228,3 +228,48 @@ export async function updateProject(projectId: string, data: any) {
     };
   }
 }
+
+export async function updateProjectTags(id: string, newTags: string[]) {
+  try {
+    const updatedProject = await db.project.update({
+      where: { id },
+      data: { tags: newTags },
+    });
+
+    return {
+      success: true,
+      message: "Tags updated successfully.",
+      project: updatedProject,
+      status: 200,
+    };
+  } catch (error: any) {
+    console.error("Error updating tags: ", error);
+
+    return {
+      success: false,
+      message: "Error updating tags.",
+      status: 500,
+    };
+  }
+}
+
+export async function deleteProject(projectId: string) {
+  try {
+    await db.project.delete({
+      where: { id: projectId },
+    });
+
+    return {
+      success: true,
+      message: "Project deleted successfully.",
+      status: 200,
+    };
+  } catch (error: any) {
+    console.error("Error deleting project: ", error);
+    return {
+      success: false,
+      message: "Failed to delete the project.",
+      status: 500,
+    };
+  }
+}

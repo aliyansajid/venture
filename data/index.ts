@@ -95,11 +95,21 @@ export const settingLinks = [
   {
     label: "General Information",
     section: "general",
-    icon: "/icons/ChartPie.svg",
+    icon: "/icons/Info.svg",
   },
   {
     label: "Members",
     section: "members",
-    icon: "/icons/ChartPie.svg",
+    icon: "/icons/Users.svg",
+  },
+  {
+    label: "Tags",
+    section: "tags",
+    icon: "/icons/Tag.svg",
+  },
+  {
+    label: "Delete",
+    action: "deleteProject",
+    icon: "/icons/Trash.svg",
   },
 ];
