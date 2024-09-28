@@ -9,9 +9,11 @@ import { Separator } from "@/components/ui/separator";
 const Tasks = ({
   projectId,
   tasks: initialTasks,
+  onUpdateProjectTasks,
 }: {
   projectId: string;
   tasks: Task[];
+  onUpdateProjectTasks: (completedTasksDelta: number) => void;
 }) => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -24,12 +26,26 @@ const Tasks = ({
     }
   };
 
-  const updateChecklist = (taskId: string, updatedChecklist: Subtask[]) => {
+  const updateChecklist = (
+    taskId: string,
+    updatedChecklist: Subtask[],
+    taskCompleted: boolean
+  ) => {
+    const taskWasCompleted = tasks
+      .find((task) => task.id === taskId)
+      ?.subtasks.every((subtask) => subtask.completed);
+
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId ? { ...task, subtasks: updatedChecklist } : task
       )
     );
+
+    if (taskCompleted && !taskWasCompleted) {
+      onUpdateProjectTasks(1);
+    } else if (!taskCompleted && taskWasCompleted) {
+      onUpdateProjectTasks(-1);
+    }
   };
 
   return (
@@ -110,8 +126,8 @@ const Tasks = ({
         <div className="w-1/2 border-l border-border-primary">
           <TaskDetail
             task={selectedTask}
-            updateChecklist={(updatedChecklist) =>
-              updateChecklist(selectedTask.id, updatedChecklist)
+            updateChecklist={(updatedChecklist, taskCompleted) =>
+              updateChecklist(selectedTask.id, updatedChecklist, taskCompleted)
             }
           />
         </div>

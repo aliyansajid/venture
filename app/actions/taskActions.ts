@@ -105,23 +105,45 @@ export async function toggleSubtaskCompletion(
   try {
     const subtask = await db.subtask.update({
       where: { id: subtaskId },
-      data: {
-        completed,
-      },
+      data: { completed },
     });
+
+    const task = await db.task.findUnique({
+      where: { id: subtask.taskId },
+      include: { subtasks: true },
+    });
+
+    if (!task) {
+      throw new Error("Task not found");
+    }
+
+    const allSubtasksCompleted = task.subtasks.every((sub) => sub.completed);
 
     await db.task.update({
       where: { id: subtask.taskId },
       data: {
-        completedSubTasks: completed
-          ? {
-              increment: 1,
-            }
-          : {
-              decrement: 1,
-            },
+        completedSubTasks: completed ? { increment: 1 } : { decrement: 1 },
       },
     });
+
+    if (allSubtasksCompleted && !task.completedSubTasks) {
+      await db.project.update({
+        where: { id: task.projectId },
+        data: {
+          completedTasks: { increment: 1 },
+        },
+      });
+    } else if (
+      !allSubtasksCompleted &&
+      task.completedSubTasks === task.totalSubTasks
+    ) {
+      await db.project.update({
+        where: { id: task.projectId },
+        data: {
+          completedTasks: { decrement: 1 },
+        },
+      });
+    }
 
     return subtask;
   } catch (error) {
@@ -143,6 +165,8 @@ export async function deleteTask(taskId: string) {
       };
     }
 
+    const wasTaskCompleted = task.completedSubTasks === task.totalSubTasks;
+
     await db.task.delete({
       where: { id: taskId },
     });
@@ -150,9 +174,8 @@ export async function deleteTask(taskId: string) {
     await db.project.update({
       where: { id: task.projectId },
       data: {
-        totalTasks: {
-          decrement: 1,
-        },
+        totalTasks: { decrement: 1 },
+        completedTasks: wasTaskCompleted ? { decrement: 1 } : undefined,
       },
     });
 

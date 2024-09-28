@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import TopHeader from "@/components/TopHeader";
 import { Project, Task } from "@/types/next-auth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProjectHeader from "@/components/Projects/Header";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import Settings from "@/components/Projects/Settings";
@@ -13,7 +14,7 @@ import Tasks from "@/components/Projects/Tasks";
 
 const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
   const { toast } = useToast();
-  const [project, setProject] = useState<Project>();
+  const [project, setProject] = useState<Project | undefined>();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projectNotFound, setProjectNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +40,17 @@ const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
     handleFetchProject();
   }, [id]);
 
+  const onUpdateProjectTasks = (completedTasksDelta: number) => {
+    setProject((prevProject) =>
+      prevProject
+        ? {
+            ...prevProject,
+            completedTasks: prevProject.completedTasks + completedTasksDelta,
+          }
+        : prevProject
+    );
+  };
+
   return (
     <section>
       <TopHeader />
@@ -60,7 +72,13 @@ const ProjectDetail = ({ params: { id } }: { params: { id: string } }) => {
             />
 
             <TabsContent value="Tasks">
-              {project && <Tasks projectId={id} tasks={tasks} />}
+              {project && (
+                <Tasks
+                  projectId={id}
+                  tasks={tasks}
+                  onUpdateProjectTasks={onUpdateProjectTasks}
+                />
+              )}
             </TabsContent>
             <TabsContent value="Timeline">
               <div>Timeline content goes here</div>

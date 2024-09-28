@@ -30,24 +30,21 @@ const ProjectCard = ({
   return (
     <Link href={`/projects/${id}`} passHref>
       <div className="cursor-pointer bg-background-primary border border-border-primary rounded-md space-y-4 px-4 py-4 max-w-md hover:shadow transition-shadow duration-200">
-        <div className="flex justify-between">
-          {tags.length > 0 && (
-            <div className="flex items-center gap-3">
-              {tags.map((tag, index) => {
-                const color = getTagColor(index);
-                return (
-                  <span
-                    key={index}
-                    className={`text-xs font-medium px-1.5 py-1 rounded ${color.bg} ${color.text}`}
-                  >
-                    {tag}
-                  </span>
-                );
-              })}
-            </div>
-          )}
-          <Image src="/icons/More.svg" alt="More" width={20} height={20} />
-        </div>
+        {tags.length > 0 && (
+          <div className="flex items-center gap-3">
+            {tags.map((tag, index) => {
+              const color = getTagColor(index);
+              return (
+                <span
+                  key={index}
+                  className={`text-xs font-medium px-1.5 py-1 rounded ${color.bg} ${color.text}`}
+                >
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
         <h3 className="text-lg font-medium text-dark-primary">{title}</h3>
         <div className="flex justify-between">
           <p className="flex gap-2 text-sm text-dark-secondary font-normal overflow-hidden">

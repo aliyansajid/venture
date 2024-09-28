@@ -29,7 +29,7 @@ const TaskDetail = ({
   updateChecklist,
 }: {
   task: Task;
-  updateChecklist: (checklist: Subtask[]) => void;
+  updateChecklist: (checklist: Subtask[], taskCompleted: boolean) => void;
 }) => {
   const { toast } = useToast();
   const router = useRouter();
@@ -52,11 +52,11 @@ const TaskDetail = ({
         setChecklist(
           subtasks.filter((subtask): subtask is Subtask => subtask !== null)
         );
-        updateChecklist(subtasks);
+        updateChecklist(subtasks, completedSubtasks === totalSubtasks);
       }
     };
     loadSubtasks();
-  }, [task.id, updateChecklist]);
+  }, [task.id]);
 
   const handleAddChecklistItem = async (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -69,7 +69,7 @@ const TaskDetail = ({
       if (newSubtask) {
         const updatedChecklist = [...checklist, newSubtask];
         setChecklist(updatedChecklist);
-        updateChecklist(updatedChecklist);
+        updateChecklist(updatedChecklist, completedSubtasks === totalSubtasks);
       }
     }
   };
@@ -84,7 +84,8 @@ const TaskDetail = ({
         item.id === subtask.id ? updatedSubtask : item
       );
       setChecklist(updatedChecklist);
-      updateChecklist(updatedChecklist);
+      const isTaskCompleted = updatedChecklist.every((item) => item.completed);
+      updateChecklist(updatedChecklist, isTaskCompleted);
     }
   };
 
