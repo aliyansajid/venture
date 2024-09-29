@@ -1,33 +1,23 @@
-import { useState } from "react";
-import CustomButton, { ButtonVariant } from "../CustomButton";
+import { Task } from "@/types/next-auth";
 import TaskForm from "../forms/TaskForm";
-import ModalDialog from "../ModalDialog";
 
-const CreateTaskModal = ({ projectId }: { projectId: string }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const CreateTask = ({
+  projectId,
+  onTaskCreated,
+}: {
+  projectId: string;
+  onTaskCreated: (newTask: Task) => void;
+}) => {
   return (
-    <>
-      <CustomButton
-        variant={ButtonVariant.LINK}
-        text="Create new task"
-        iconSrc="/icons/PlusCircle.svg"
-        iconAlt="Plus Circle"
-        onClick={() => setIsModalOpen(true)}
-        className="h-auto p-0"
-      />
-
-      {isModalOpen && (
-        <ModalDialog
-          isOpen={isModalOpen}
-          title="Create New Task"
-          description="Fill in the details to create new task."
-          onClose={() => setIsModalOpen(false)}
-        >
-          <TaskForm projectId={projectId} />
-        </ModalDialog>
-      )}
-    </>
+    <div>
+      <div className="text-sm font-medium text-dark-secondary px-8 py-4 border-b border-border-primary">
+        New Task Details
+      </div>
+      <div className="p-8">
+        <TaskForm projectId={projectId} onTaskCreated={onTaskCreated} />
+      </div>
+    </div>
   );
 };
 
-export default CreateTaskModal;
+export default CreateTask;

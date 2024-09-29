@@ -3,8 +3,9 @@ import { Task, Subtask } from "@/types/next-auth";
 import TaskDetail from "../Tasks/TaskDetail";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
-import CreateTaskModal from "../Tasks/CreateTask";
 import { Separator } from "@/components/ui/separator";
+import CustomButton, { ButtonVariant } from "../CustomButton";
+import CreateTask from "../Tasks/CreateTask";
 
 const Tasks = ({
   projectId,
@@ -17,13 +18,22 @@ const Tasks = ({
 }) => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [isCreatingTask, setIsCreatingTask] = useState(false);
+
+  const handleCreateTask = () => {
+    setIsCreatingTask(true);
+    setSelectedTask(null);
+  };
 
   const handleTaskClick = (task: Task) => {
-    if (selectedTask && selectedTask.id === task.id) {
-      setSelectedTask(null);
-    } else {
-      setSelectedTask(task);
-    }
+    setIsCreatingTask(false);
+    setSelectedTask(selectedTask?.id === task.id ? null : task);
+  };
+
+  const handleTaskCreated = (newTask: Task) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setIsCreatingTask(false); // Close the create task form after creation
+    setSelectedTask(newTask); // Optionally select the newly created task
   };
 
   const updateChecklist = (
@@ -50,13 +60,24 @@ const Tasks = ({
 
   return (
     <div className="flex">
-      <div className={`w-${selectedTask ? "1/2" : "full"} p-8`}>
+      <div
+        className={`w-${selectedTask || isCreatingTask ? "1/2" : "full"} p-8`}
+      >
         <div className="border border-border-primary rounded-md">
           <div className="flex p-4">
-            <CreateTaskModal projectId={projectId} />
+            <CustomButton
+              variant={ButtonVariant.LINK}
+              text="Create new task"
+              iconSrc="/icons/PlusCircle.svg"
+              iconAlt="Plus Circle"
+              className="h-auto p-0"
+              onClick={handleCreateTask}
+            />
           </div>
 
-          <Separator orientation="horizontal" className="h-[0.5px]" />
+          {tasks.length > 0 && (
+            <Separator orientation="horizontal" className="h-[0.5px]" />
+          )}
 
           <ul className="list-none p-0 m-0">
             {tasks.map((task, index) => {
@@ -122,15 +143,27 @@ const Tasks = ({
         </div>
       </div>
 
-      {selectedTask && (
+      {(selectedTask || isCreatingTask) && (
         <div className="w-1/2 border-l border-border-primary">
-          <TaskDetail
-            projectId={projectId}
-            task={selectedTask}
-            updateChecklist={(updatedChecklist, taskCompleted) =>
-              updateChecklist(selectedTask.id, updatedChecklist, taskCompleted)
-            }
-          />
+          {selectedTask && (
+            <TaskDetail
+              projectId={projectId}
+              task={selectedTask}
+              updateChecklist={(updatedChecklist, taskCompleted) =>
+                updateChecklist(
+                  selectedTask.id,
+                  updatedChecklist,
+                  taskCompleted
+                )
+              }
+            />
+          )}
+          {isCreatingTask && (
+            <CreateTask
+              projectId={projectId}
+              onTaskCreated={handleTaskCreated}
+            />
+          )}
         </div>
       )}
     </div>

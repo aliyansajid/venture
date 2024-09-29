@@ -143,6 +143,8 @@ export interface Task {
   dueDate: Date;
   priority: string;
   status?: string | null;
+  completedSubTasks?: string;
+  totalSubTasks?: string;
   assignee: {
     id: string;
     firstName: string;

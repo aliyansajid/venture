@@ -254,10 +254,12 @@ const TaskDetail = ({
           </div>
         </div>
 
-        <div className="space-y-2">
-          <h4 className="text-base font-medium">Description</h4>
-          <p className="text-sm text-dark-secondary">{task.description}</p>
-        </div>
+        {task.description && (
+          <div className="space-y-2">
+            <h4 className="text-base font-medium">Description</h4>
+            <p className="text-sm text-dark-secondary">{task.description}</p>
+          </div>
+        )}
 
         <div className="space-y-2">
           <h4 className="text-base font-medium">Checklist</h4>

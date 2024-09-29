@@ -17,7 +17,15 @@ import Image from "next/image";
 import { createTask, updateTask } from "@/app/actions/taskActions";
 import { Skeleton } from "../ui/skeleton";
 
-const TaskForm = ({ projectId, task }: { projectId: string; task?: Task }) => {
+const TaskForm = ({
+  projectId,
+  task,
+  onTaskCreated,
+}: {
+  projectId: string;
+  task?: Task;
+  onTaskCreated?: (newTask: Task) => void;
+}) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
@@ -82,6 +90,37 @@ const TaskForm = ({ projectId, task }: { projectId: string; task?: Task }) => {
           description: result.message,
           variant: "default",
         });
+        if (!task && onTaskCreated) {
+          const assignee = teamMembers.find(
+            (member) => member.id === values.assignedTo
+          );
+
+          if (assignee) {
+            onTaskCreated({
+              id: result.task?.id as string,
+              title: values.title,
+              subtasks: [],
+              assignee: {
+                id: assignee.id,
+                firstName: assignee.firstName,
+                lastName: assignee.lastName,
+                image: assignee.image ?? null,
+              },
+              dueDate: values.dueDate,
+              priority: values.priority,
+              status: values.status,
+              description: values.description,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+          } else {
+            toast({
+              description:
+                "Failed to assign the task due to an invalid assignee.",
+              variant: "destructive",
+            });
+          }
+        }
       } else {
         toast({
           description: result.message,
