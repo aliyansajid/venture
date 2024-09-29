@@ -14,6 +14,7 @@ import {
   fetchTeams,
   createProject,
   fetchClients,
+  updateProject,
 } from "@/app/actions/projectActions";
 import { useToast } from "../ui/use-toast";
 import { Client, Project } from "@/types/next-auth";
@@ -109,7 +110,14 @@ const ProjectForm = ({
         ...values,
         budget: Number(values.budget),
       };
-      const result = await createProject(parsedValues);
+
+      // Check if we have a projectId, if so, update the project, otherwise create it
+      let result;
+      if (projectId) {
+        result = await updateProject(projectId, parsedValues);
+      } else {
+        result = await createProject(parsedValues);
+      }
 
       if (result.success) {
         toast({
@@ -125,7 +133,7 @@ const ProjectForm = ({
       }
     } catch (error) {
       toast({
-        description: "Failed to create project",
+        description: `Failed to ${projectId ? "update" : "create"} project`,
         variant: "destructive",
       });
     } finally {

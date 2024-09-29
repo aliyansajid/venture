@@ -3,6 +3,7 @@ import { AnimatedTooltip } from "../ui/animated-tooltip";
 import Link from "next/link";
 import Image from "next/image";
 import { tagColors } from "@/lib/utils";
+import { Calendar, ListTodo } from "lucide-react";
 
 const ProjectCard = ({
   id,
@@ -29,7 +30,7 @@ const ProjectCard = ({
 
   return (
     <Link href={`/projects/${id}`} passHref>
-      <div className="cursor-pointer bg-background-primary border border-border-primary rounded-md space-y-4 px-4 py-4 max-w-md hover:shadow transition-shadow duration-200">
+      <div className="cursor-pointer bg-background-primary border border-border-primary rounded-md space-y-3 px-6 py-4 max-w-md hover:shadow transition-shadow duration-200">
         {tags.length > 0 && (
           <div className="flex items-center gap-3">
             {tags.map((tag, index) => {
@@ -47,22 +48,17 @@ const ProjectCard = ({
         )}
         <h3 className="text-lg font-medium text-dark-primary">{title}</h3>
         <div className="flex justify-between">
-          <p className="flex gap-2 text-sm text-dark-secondary font-normal overflow-hidden">
-            <Image src="/icons/Date.svg" alt="Date" width={16} height={16} />
-            Due on{" "}
+          <p className="flex items-center gap-2 text-sm text-dark-secondary font-normal overflow-hidden">
+            <Calendar size={16} />
+            Due on&nbsp;
             {new Date(dueDate).toLocaleDateString("en-GB", {
               day: "2-digit",
               month: "short",
               year: "numeric",
             })}
           </p>
-          <p className="flex gap-2 text-sm text-dark-secondary font-normal overflow-hidden">
-            <Image
-              src="/icons/Checklist.svg"
-              alt="Checklist"
-              width={16}
-              height={16}
-            />
+          <p className="flex items-center gap-2 text-sm text-dark-secondary font-normal overflow-hidden">
+            <ListTodo size={16} />
             {completedTasks}/{totalTasks}
           </p>
         </div>
