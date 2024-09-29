@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import ModalDialog from "@/components/ModalDialog";
 import CustomButton, { ButtonVariant } from "../CustomButton";
 import Tags from "@/components/Projects/Tags";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "../ui/use-toast";
 
 const Settings = ({
@@ -28,6 +29,7 @@ const Settings = ({
   const [activeSection, setActiveSection] = useState("general");
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamLead, setTeamLead] = useState<any>([]);
+  const [isTeamLoading, setIsTeamLoading] = useState(true);
 
   const handleFetchProject = async () => {
     try {
@@ -56,6 +58,8 @@ const Settings = ({
         description: "Failed to fetch project or team.",
         variant: "destructive",
       });
+    } finally {
+      setIsTeamLoading(false);
     }
   };
 
@@ -146,9 +150,14 @@ const Settings = ({
         {activeSection === "general" && projectId && project && (
           <GeneralInformation projectId={projectId} project={project} />
         )}
-        {activeSection === "members" && teamMembers && (
-          <Members members={teamMembers} teamLead={teamLead} />
+        {activeSection === "members" && (
+          <Members
+            members={teamMembers}
+            teamLead={teamLead}
+            isLoading={isTeamLoading}
+          />
         )}
+
         {activeSection === "tags" && projectId && (
           <Tags projectId={projectId} />
         )}
